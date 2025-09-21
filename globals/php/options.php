@@ -199,7 +199,7 @@ function igny8_update_input_scope($scope) {
  * @return string Detection prompt
  */
 function igny8_get_detection_prompt() {
-    return get_option('igny8_detection_prompt', '');
+    return get_option('igny8_content_engine_detection_prompt', '');
 }
 
 /**
@@ -207,7 +207,7 @@ function igny8_get_detection_prompt() {
  * @param string $prompt Detection prompt
  */
 function igny8_update_detection_prompt($prompt) {
-    update_option('igny8_detection_prompt', sanitize_textarea_field($prompt));
+    update_option('igny8_content_engine_detection_prompt', sanitize_textarea_field($prompt));
 }
 
 /**

@@ -155,11 +155,11 @@ $enabled_post_types = get_option('igny8_content_engine_enabled_post_types', []);
 if ($content_engine_status === 'enabled' && in_array($post_type, $enabled_post_types)) {
     // Use Content Engine-specific settings
     $scope = get_option('igny8_content_engine_input_scope', get_option('igny8_input_scope', '300'));
-    $prompt_template = get_option('igny8_content_engine_detection_prompt', get_option('igny8_detection_prompt', ''));
+    $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
 } else {
     // Use global settings
     $scope = get_option('igny8_input_scope', 'title');
-    $prompt_template = get_option('igny8_detection_prompt', '');
+    $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
 }
 
 // 🔁 STEP 1: Load content from post based on scope

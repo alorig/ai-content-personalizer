@@ -32,7 +32,7 @@ $options = [
 
     'igny8_input_scope',
 
-    'igny8_detection_prompt',
+    'igny8_content_engine_detection_prompt',
 
     'igny8_content_length',
 
