@@ -122,8 +122,8 @@ function igny8_content_engine_admin_page() {
         
         <form method="post" action="options.php" class="igny8-settings-form">
             <?php
-            settings_fields('igny8_settings_group');
-            do_settings_sections('igny8_settings_group');
+            settings_fields('igny8_personalize_settings_group');
+            do_settings_sections('igny8_personalize_settings_group');
             ?>
             
             <!-- Global Settings Tab -->
