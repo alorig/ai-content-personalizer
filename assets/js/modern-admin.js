@@ -436,7 +436,7 @@ function initToggleSwitches() {
     });
     
     // Handle personalize status toggle specifically
-    const personalizeToggle = document.querySelector('input[name="igny8_personalize_status"]');
+    const personalizeToggle = document.querySelector('input[name="igny8_content_engine_global_status"]');
     if (personalizeToggle) {
         personalizeToggle.addEventListener('change', function() {
             console.log('Personalize toggle changed:', this.checked);
@@ -444,7 +444,7 @@ function initToggleSwitches() {
     }
     
     // Handle post type toggles (both old and new field names)
-    const postTypeToggles = document.querySelectorAll('input[name="igny8_content_engine_enabled_post_types[]"], input[name="igny8_personalize_enabled_post_types[]"]');
+    const postTypeToggles = document.querySelectorAll('input[name="igny8_content_engine_enabled_post_types[]"], input[name="igny8_content_engine_enabled_post_types[]"]');
     postTypeToggles.forEach(toggle => {
         toggle.addEventListener('change', function() {
             const card = this.closest('.igny8-global-card, .igny8-post-type-card');
@@ -528,4 +528,41 @@ function initToggleSwitches() {
             showDebugBtn.style.display = 'inline-block';
         });
     }
+    
+    // Handle manual fields table functionality
+    const addFieldBtn = document.querySelector('.igny8-add-field');
+    const removeFieldBtns = document.querySelectorAll('.igny8-remove-field');
+    const fieldsTableBody = document.getElementById('igny8-fixed-fields-tbody');
+    
+    if (addFieldBtn && fieldsTableBody) {
+        addFieldBtn.addEventListener('click', function() {
+            const newIndex = fieldsTableBody.children.length;
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" name="igny8_content_engine_fixed_fields_config[${newIndex}][label]" value=""></td>
+                <td>
+                    <select name="igny8_content_engine_fixed_fields_config[${newIndex}][type]">
+                        <option value="text">Text</option>
+                        <option value="select">Select</option>
+                    </select>
+                </td>
+                <td><input type="text" name="igny8_content_engine_fixed_fields_config[${newIndex}][options]" value="" placeholder="Comma-separated values"></td>
+                <td><button type="button" class="button igny8-remove-field">Remove</button></td>
+            `;
+            fieldsTableBody.appendChild(newRow);
+            
+            // Add event listener to the new remove button
+            const newRemoveBtn = newRow.querySelector('.igny8-remove-field');
+            newRemoveBtn.addEventListener('click', function() {
+                newRow.remove();
+            });
+        });
+    }
+    
+    // Handle existing remove buttons
+    removeFieldBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('tr').remove();
+        });
+    });
 }
