@@ -56,9 +56,64 @@ add_action('admin_init', function () {
         'sanitize_callback' => 'sanitize_hex_color',
     ]);
 
-    // == Personalize Module Settings - Using existing working field names
-    // Note: These settings are already registered elsewhere in the plugin
-    // and are connected to the working API. No need to re-register them.
+    // == Personalize Module Settings - Register all content engine fields
+    register_setting('igny8_settings_group', 'igny8_content_engine_global_status', [
+        'sanitize_callback' => function($raw) {
+            return isset($_POST['igny8_content_engine_global_status']) ? 'enabled' : 'disabled';
+        }
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_enabled_post_types', [
+        'sanitize_callback' => function($raw) {
+            return is_array($raw) ? array_map('sanitize_text_field', $raw) : [];
+        }
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_insertion_position', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_display_mode', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_teaser_text', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_save_generated_content', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_save_variations', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_field_mode', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_detection_prompt', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_context_source', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_include_page_context', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_content_length', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_rewrite_prompt', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_content_engine_fixed_fields_config', [
+        'sanitize_callback' => function($raw) {
+            if (!is_array($raw)) return [];
+            $sanitized = [];
+            foreach ($raw as $index => $field) {
+                $sanitized[$index] = [
+                    'label' => sanitize_text_field($field['label'] ?? ''),
+                    'type' => sanitize_text_field($field['type'] ?? 'text'),
+                    'options' => sanitize_text_field($field['options'] ?? '')
+                ];
+            }
+            return $sanitized;
+        }
+    ]);
 });
 
 
