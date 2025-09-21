@@ -101,25 +101,19 @@ function igny8_settings_page() {
                                 <label><?php esc_html_e('Select Model','igny8'); ?></label>
                                 <select name="igny8_model">
                                     <optgroup label="<?php esc_attr_e('GPT-5 Models','igny8'); ?>">
-                                        <option value="gpt-5_standard" <?php selected('gpt-5_standard', get_option('igny8_model', 'gpt-4.1_standard')); ?>><?php esc_html_e('GPT-5 Standard ($50/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-5_flex" <?php selected('gpt-5_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Flex ($25/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-5-mini_standard" <?php selected('gpt-5-mini_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Mini Standard ($20/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-5-mini_flex" <?php selected('gpt-5-mini_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Mini Flex ($10/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-5-nano_standard" <?php selected('gpt-5-nano_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Nano Standard ($15/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-5-nano_flex" <?php selected('gpt-5-nano_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Nano Flex ($8/1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-5" <?php selected('gpt-5', get_option('igny8_model', 'gpt-4.1')); ?>><?php esc_html_e('GPT-5 ($1.25 / $10.00 per 1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-5-mini" <?php selected('gpt-5-mini', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Mini ($0.25 / $2.00 per 1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-5-nano" <?php selected('gpt-5-nano', get_option('igny8_model')); ?>><?php esc_html_e('GPT-5 Nano ($0.05 / $0.40 per 1M tokens)','igny8'); ?></option>
                                     </optgroup>
                                     <optgroup label="<?php esc_attr_e('GPT-4.1 Models','igny8'); ?>">
-                                        <option value="gpt-4.1_standard" <?php selected('gpt-4.1_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Standard ($30/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4.1_flex" <?php selected('gpt-4.1_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Flex ($15/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4.1-mini_standard" <?php selected('gpt-4.1-mini_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Mini Standard ($12/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4.1-mini_flex" <?php selected('gpt-4.1-mini_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Mini Flex ($6/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4.1-nano_standard" <?php selected('gpt-4.1-nano_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Nano Standard ($8/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4.1-nano_flex" <?php selected('gpt-4.1-nano_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Nano Flex ($4/1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-4.1" <?php selected('gpt-4.1', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 ($3.00 / $12.00 per 1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-4.1-mini" <?php selected('gpt-4.1-mini', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4.1 Mini ($0.80 / $3.20 per 1M tokens)','igny8'); ?></option>
                                     </optgroup>
                                     <optgroup label="<?php esc_attr_e('GPT-4o Models','igny8'); ?>">
-                                        <option value="gpt-4o_standard" <?php selected('gpt-4o_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4o Standard ($25/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4o-mini_standard" <?php selected('gpt-4o-mini_standard', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4o Mini Standard ($10/1M tokens)','igny8'); ?></option>
-                                        <option value="gpt-4o-mini_flex" <?php selected('gpt-4o-mini_flex', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4o Mini Flex ($5/1M tokens)','igny8'); ?></option>
+                                        <option value="gpt-4o-mini" <?php selected('gpt-4o-mini', get_option('igny8_model')); ?>><?php esc_html_e('GPT-4o Mini ($0.15 / $0.60 per 1M tokens)','igny8'); ?></option>
+                                    </optgroup>
+                                    <optgroup label="<?php esc_attr_e('GPT-3.5 Models','igny8'); ?>">
+                                        <option value="gpt-3.5-turbo" <?php selected('gpt-3.5-turbo', get_option('igny8_model')); ?>><?php esc_html_e('GPT-3.5 Turbo ($0.50 / $1.50 per 1M tokens)','igny8'); ?></option>
                                     </optgroup>
                                 </select>
                                 <p class="igny8-input-description"><?php esc_html_e('Choose the AI model for content generation. Standard models are faster, Flex models are more cost-effective.','igny8'); ?></p>

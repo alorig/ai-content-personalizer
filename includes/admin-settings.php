@@ -22,23 +22,18 @@ add_action('admin_init', function () {
     register_setting('igny8_settings_group', 'igny8_model', [
         'sanitize_callback' => function ($raw) {
             if (!is_string($raw) || $raw === '') {
-                return 'gpt-4.1_standard';
-            }
-            // Map legacy plain ids to *_standard
-            if (strpos($raw, '_standard') === false && strpos($raw, '_flex') === false) {
-                $raw = $raw . '_standard';
+                return 'gpt-4.1';
             }
             $allowed = [
-                'gpt-5_standard','gpt-5_flex',
-                'gpt-4.1_standard','gpt-4.1_flex',
-                'gpt-5-mini_standard','gpt-5-mini_flex',
-                'gpt-5-nano_standard','gpt-5-nano_flex',
-                'gpt-4.1-mini_standard','gpt-4.1-mini_flex',
-                'gpt-4.1-nano_standard','gpt-4.1-nano_flex',
-                'gpt-4o_standard',
-                'gpt-4o-mini_standard','gpt-4o-mini_flex',
+                'gpt-5',
+                'gpt-4.1',
+                'gpt-5-mini',
+                'gpt-4.1-mini',
+                'gpt-5-nano',
+                'gpt-3.5-turbo',
+                'gpt-4o-mini',
             ];
-            return in_array($raw, $allowed, true) ? $raw : 'gpt-4.1_standard';
+            return in_array($raw, $allowed, true) ? $raw : 'gpt-4.1';
         }
     ]);
     register_setting('igny8_settings_group', 'igny8_use_moderation');
