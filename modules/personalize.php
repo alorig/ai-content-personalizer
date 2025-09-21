@@ -164,7 +164,7 @@ function igny8_content_engine_admin_page() {
                                         $checked = in_array($post_type_name, $enabled_types) ? 'checked' : '';
                                         echo '<label class="igny8-checkbox-label" style="display: block; margin: 8px 0;">
                                             <input type="checkbox" name="igny8_content_engine_enabled_post_types[]" value="' . esc_attr($post_type_name) . '" ' . $checked . '>
-                                            <span class="igny8-checkbox-text">✓ ' . esc_html($post_type->label) . '</span>
+                                            <span class="igny8-checkbox-text">' . esc_html($post_type->label) . '</span>
                                         </label>';
                                     }
                                 }
@@ -427,7 +427,8 @@ Content: [CONTENT]')); ?></textarea>
                             </div>
                         </div>
                     </div>
-                    
+                                    </div>
+                                    <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
                     <div class="igny8-card igny8-card-teal" style="flex: 1; min-width: 300px;">
                         <div class="igny8-card-header">
                             <div class="igny8-card-icon igny8-icon-blue"></div>
@@ -442,7 +443,7 @@ Content: [CONTENT]')); ?></textarea>
                             <div class="igny8-input-group">
                                 <label class="igny8-checkbox-label">
                                     <input type="checkbox" name="igny8_content_engine_include_page_context" value="1" <?php checked(get_option('igny8_content_engine_include_page_context', 1), 1); ?> />
-                                    <span class="igny8-checkbox-text">✓ <?php esc_html_e('Include Page Context', 'igny8'); ?></span>
+                                    <span class="igny8-checkbox-text"><?php esc_html_e('Include Page Context', 'igny8'); ?></span>
                                 </label>
                                 <p class="igny8-input-description"><?php esc_html_e('Include page content as context for personalization.', 'igny8'); ?></p>
                             </div>
@@ -458,14 +459,14 @@ Content: [CONTENT]')); ?></textarea>
                             <div class="igny8-input-group">
                                 <label class="igny8-checkbox-label">
                                     <input type="checkbox" name="igny8_content_engine_save_generated_content" value="1" <?php checked(get_option('igny8_content_engine_save_generated_content', 1), 1); ?> />
-                                    <span class="igny8-checkbox-text">✓ <?php esc_html_e('Save Generated Content', 'igny8'); ?></span>
+                                    <span class="igny8-checkbox-text"><?php esc_html_e('Save Generated Content', 'igny8'); ?></span>
                                 </label>
                                 <p class="igny8-input-description"><?php esc_html_e('Save generated content for future use.', 'igny8'); ?></p>
                             </div>
                             <div class="igny8-input-group">
                                 <label class="igny8-checkbox-label">
                                     <input type="checkbox" name="igny8_content_engine_save_variations" value="1" <?php checked(get_option('igny8_content_engine_save_variations', 1), 1); ?> />
-                                    <span class="igny8-checkbox-text">✓ <?php esc_html_e('Save Variations', 'igny8'); ?></span>
+                                    <span class="igny8-checkbox-text"><?php esc_html_e('Save Variations', 'igny8'); ?></span>
                                 </label>
                                 <p class="igny8-input-description"><?php esc_html_e('Save multiple variations of generated content.', 'igny8'); ?></p>
                             </div>
