@@ -3,7 +3,7 @@
  * Plugin Name: AI Content Personalizer & Rewriter
  * Plugin URI:  https://github.com/alorig/ai-content-personalizer
  * Description: Free plugin to personalize or rewrite WordPress content for each visitor using AI. Frontend personalization, unlimited variations, OpenAI-powered.
- * Version:     0.1.0
+ * Version:     0.1.1
  * Author:      Alorig Systems
  * Author URI:  https://alorig.com
  * License:     GPLv2 or later
