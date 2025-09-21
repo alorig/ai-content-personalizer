@@ -60,6 +60,58 @@ add_action('admin_init', function () {
     register_setting('igny8_settings_group', 'igny8_content_bg', [
         'sanitize_callback' => 'sanitize_hex_color',
     ]);
+
+    // == Personalize Module Settings
+    register_setting('igny8_settings_group', 'igny8_personalize_status', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_enabled_post_types', [
+        'sanitize_callback' => function($raw) {
+            return is_array($raw) ? array_map('sanitize_text_field', $raw) : [];
+        }
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_insertion_position', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_display_mode', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_teaser_text', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_save_generated_content', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_save_variations', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_field_mode', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_detection_prompt', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_custom_context', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_include_page_context', [
+        'sanitize_callback' => 'intval',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_content_length', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_tone', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_style', [
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_prompt', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    register_setting('igny8_settings_group', 'igny8_personalize_rewrite_prompt', [
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
 });
 
 
