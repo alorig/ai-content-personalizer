@@ -4,6 +4,11 @@ defined('ABSPATH') || exit;
 add_action('wp_footer', 'igny8_output_custom_css');
 
 function igny8_output_custom_css() {
+    // Prevent output during plugin activation or admin context
+    if (is_admin() || defined('WP_INSTALLING')) {
+        return;
+    }
+    
     // Check if Content Engine is enabled and use Content Engine-specific settings if available
     $content_engine_status = get_option('igny8_content_engine_global_status', 'enabled');
     $post_type = get_post_type();
