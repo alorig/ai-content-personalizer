@@ -19,6 +19,10 @@ require_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-ui.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-enqueue.php';
 require_once plugin_dir_path(__FILE__) . 'includes/rewriter-personalization.php';
+require_once plugin_dir_path(__FILE__) . 'includes/content-engine-new-admin.php';
+require_once plugin_dir_path(__FILE__) . 'includes/sample-data-admin.php';
+require_once plugin_dir_path(__FILE__) . 'includes/data-model.php';
+require_once plugin_dir_path(__FILE__) . 'includes/admin-ui-framework.php';
 require_once plugin_dir_path(__FILE__) . 'includes/shortcode.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ajax.php';
 require_once plugin_dir_path(__FILE__) . 'includes/openai.php';
@@ -27,6 +31,13 @@ require_once plugin_dir_path(__FILE__) . 'includes/utils.php';
 require_once plugin_dir_path(__FILE__) . 'includes/content-generation-api.php';
 
 // Load module-specific admin files
+require_once plugin_dir_path(__FILE__) . 'includes/dashboard-admin.php';
+require_once plugin_dir_path(__FILE__) . 'includes/keywords-clusters-admin.php';
+
+// Load frontend styling and dynamic color logic
+if (!is_admin()) {
+    require_once plugin_dir_path(__FILE__) . 'includes/frontend-css.php';
+}
 
 // Register activation hook
 register_activation_hook(__FILE__, 'igny8_install');
