@@ -212,9 +212,10 @@ if (is_array($cached)) {
 
     // 💾 Cache GPT result for this post
     update_post_meta($post_id, '_igny8_fields', $fields);
+}
 
-    // 🔢 STEP 4: Extract fields from GPT result
-    $fieldset = $fields['fields'] ?? [];
+// 🔢 STEP 4: Extract fields from GPT result
+$fieldset = $fields['fields'] ?? [];
 
 // 🔘 Start rendering the dynamic form
 echo '<form id="igny8-form">';
