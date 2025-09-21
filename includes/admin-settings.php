@@ -102,15 +102,6 @@ add_action('admin_menu', function () {
 
     add_submenu_page(
         'igny8',            // Parent slug
-        'Theme',            // Page title
-        'Theme',            // Menu title
-        'manage_options',   // Capability required
-        'igny8-theme',      // Menu slug
-        'igny8_admin_page_loader' // Callback function
-    );
-
-    add_submenu_page(
-        'igny8',            // Parent slug
         'Settings',         // Page title
         'Settings',         // Menu title
         'manage_options',   // Capability required

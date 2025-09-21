@@ -18,9 +18,6 @@ function igny8_admin_page_loader() {
             igny8_dashboard_page();
             break;
 
-        case 'igny8-theme':
-            igny8_theme_page();
-            break;
         case 'igny8-settings':
             igny8_settings_page();
             break;
