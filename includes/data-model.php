@@ -345,55 +345,6 @@ function igny8_create_default_taxonomy_terms() {
 add_action('admin_menu', 'igny8_add_cpts_to_menus');
 
 function igny8_add_cpts_to_menus() {
-    // Add Keywords and Clusters to Keywords & Clusters submenu
-    add_submenu_page(
-        'igny8-keywords-clusters',
-        'Keywords',
-        'Keywords',
-        'manage_options',
-        'edit.php?post_type=igny8_keywords'
-    );
-
-    add_submenu_page(
-        'igny8-keywords-clusters',
-        'Clusters',
-        'Clusters',
-        'manage_options',
-        'edit.php?post_type=igny8_clusters'
-    );
-
-    // Add Content Engine CPTs to Content Engine submenu
-    add_submenu_page(
-        'igny8-content-engine-new',
-        'Content Planner',
-        'Content Planner',
-        'manage_options',
-        'edit.php?post_type=igny8_content_planner'
-    );
-
-    add_submenu_page(
-        'igny8-content-engine-new',
-        'Context Profiles',
-        'Context Profiles',
-        'manage_options',
-        'edit.php?post_type=igny8_context_profiles'
-    );
-
-    add_submenu_page(
-        'igny8-content-engine-new',
-        'Internal Links',
-        'Internal Links',
-        'manage_options',
-        'edit.php?post_type=igny8_internal_links'
-    );
-
-    add_submenu_page(
-        'igny8-content-engine-new',
-        'Performance Logs',
-        'Performance Logs',
-        'manage_options',
-        'edit.php?post_type=igny8_performance_logs'
-    );
 }
 
 /**

@@ -18,23 +18,11 @@ function igny8_admin_page_loader() {
             igny8_dashboard_page();
             break;
 
-        case 'igny8-keywords-clusters':
-            igny8_keywords_clusters_page();
-            break;
-        case 'igny8-trust-signals':
-            igny8_trust_signals_page();
-            break;
         case 'igny8-theme':
             igny8_theme_page();
             break;
         case 'igny8-settings':
             igny8_settings_page();
-            break;
-        case 'igny8-reports':
-            igny8_reports_page();
-            break;
-        case 'igny8-help':
-            igny8_help_page();
             break;
         default:
             igny8_dashboard_page();

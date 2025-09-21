@@ -102,33 +102,6 @@ add_action('admin_menu', function () {
 
     add_submenu_page(
         'igny8',            // Parent slug
-        'Content Engine',   // Page title
-        'Content Engine',   // Menu title
-        'manage_options',   // Capability required
-        'igny8-content-engine-new', // Menu slug
-        'igny8_content_engine_new_admin_page' // Callback function
-    );
-
-    add_submenu_page(
-        'igny8',            // Parent slug
-        'Keywords & Clusters', // Page title
-        'Keywords & Clusters', // Menu title
-        'manage_options',   // Capability required
-        'igny8-keywords-clusters', // Menu slug
-        'igny8_keywords_clusters_page' // Callback function
-    );
-
-    add_submenu_page(
-        'igny8',            // Parent slug
-        'Trust Signals',    // Page title
-        'Trust Signals',    // Menu title
-        'manage_options',   // Capability required
-        'igny8-trust-signals', // Menu slug
-        'igny8_admin_page_loader' // Callback function
-    );
-
-    add_submenu_page(
-        'igny8',            // Parent slug
         'Theme',            // Page title
         'Theme',            // Menu title
         'manage_options',   // Capability required
@@ -145,21 +118,4 @@ add_action('admin_menu', function () {
         'igny8_admin_page_loader' // Callback function
     );
 
-    add_submenu_page(
-        'igny8',            // Parent slug
-        'Reports',          // Page title
-        'Reports',          // Menu title
-        'manage_options',   // Capability required
-        'igny8-reports',    // Menu slug
-        'igny8_admin_page_loader' // Callback function
-    );
-
-    add_submenu_page(
-        'igny8',            // Parent slug
-        'Help',             // Page title
-        'Help',             // Menu title
-        'manage_options',   // Capability required
-        'igny8-help',       // Menu slug
-        'igny8_admin_page_loader' // Callback function
-    );
 }); 
