@@ -116,6 +116,7 @@ function igny8_ajax_get_fields() {
     $resolved_value = do_shortcode($raw_value);
     
 	echo "<input type='hidden' name='" . esc_attr($label) . "' value='" . esc_attr($resolved_value) . "' />";
+}
 
         }
 		echo '<input type="hidden" name="PageContent" id="PageContent" value="">';
