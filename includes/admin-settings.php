@@ -76,9 +76,6 @@ add_action('admin_init', function () {
     register_setting('igny8_settings_group', 'igny8_content_engine_teaser_text', [
         'sanitize_callback' => 'sanitize_textarea_field',
     ]);
-    register_setting('igny8_settings_group', 'igny8_content_engine_save_generated_content', [
-        'sanitize_callback' => 'intval',
-    ]);
     register_setting('igny8_settings_group', 'igny8_content_engine_save_variations', [
         'sanitize_callback' => 'intval',
     ]);

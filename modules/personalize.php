@@ -13,7 +13,6 @@ $igny8_personalize_options = [
     'insertion_position'    => ['default' => 'before', 'sanitize' => 'sanitize_text_field'],
     'display_mode'          => ['default' => 'always', 'sanitize' => 'sanitize_text_field'],
     'teaser_text'           => ['default' => 'Want to read this as if it was written exclusively about you?', 'sanitize' => 'sanitize_textarea_field'],
-    'save_generated_content'=> ['default' => 1, 'sanitize' => 'intval'],
     'save_variations'       => ['default' => 0, 'sanitize' => 'intval'],
     'field_mode'            => ['default' => 'auto', 'sanitize' => 'sanitize_text_field'],
     'detection_prompt'      => ['default' => 'Extract personalization intelligence from the content below. Identify what information about the reader would make this content more relevant and valuable.
@@ -458,17 +457,10 @@ Content: [CONTENT]')); ?></textarea>
                         <div class="igny8-card-content">
                             <div class="igny8-input-group">
                                 <label class="igny8-checkbox-label">
-                                    <input type="checkbox" name="igny8_content_engine_save_generated_content" value="1" <?php checked(get_option('igny8_content_engine_save_generated_content', 1), 1); ?> />
-                                    <span class="igny8-checkbox-text"><?php esc_html_e('Save Generated Content', 'igny8'); ?></span>
-                                </label>
-                                <p class="igny8-input-description"><?php esc_html_e('Save generated content for future use.', 'igny8'); ?></p>
-                            </div>
-                            <div class="igny8-input-group">
-                                <label class="igny8-checkbox-label">
                                     <input type="checkbox" name="igny8_content_engine_save_variations" value="1" <?php checked(get_option('igny8_content_engine_save_variations', 1), 1); ?> />
-                                    <span class="igny8-checkbox-text"><?php esc_html_e('Save Variations', 'igny8'); ?></span>
+                                    <span class="igny8-checkbox-text"><?php esc_html_e('Save Content Variants', 'igny8'); ?></span>
                                 </label>
-                                <p class="igny8-input-description"><?php esc_html_e('Save multiple variations of generated content.', 'igny8'); ?></p>
+                                <p class="igny8-input-description"><?php esc_html_e('Save multiple variants automatically to be served from cache in future.', 'igny8'); ?></p>
                             </div>
                         </div>
                     </div>
