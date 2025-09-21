@@ -1,0 +1,76 @@
+/* 🔘 Igny8 Trigger Container */
+#igny8-trigger {
+  margin-bottom: 1em;
+}
+
+#igny8-trigger p {
+  font-size: 1rem;
+  margin: 0 0 0.5em;
+}
+
+/* 🧠 Form Styling */
+#igny8-form {
+  max-width: 600px;
+  margin-top: 1em;
+}
+
+#igny8-form label {
+  font-weight: 600;
+  display: block;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+#igny8-form input,
+#igny8-form select {
+  width: 100%;
+  padding: 0.4em;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+/* ✅ Button styling defers to theme */
+#igny8-trigger .button, #igny8-output .button {
+  margin-top: 30px;
+  font-size: 24px;
+  padding: 15px 30px;
+  font-weight: normal;
+}
+
+/* 🔄 Loading UI */
+.igny8-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 1em 1.5em;
+  font-style: italic;
+  margin-top: 1.5em;
+  border-left: 4px solid var(--igny8-loading-border, #ffc107);
+  background-color: var(--igny8-loading-bg, #fff8dc);
+  font-size: 1rem;
+}
+
+/* ✅ Personalization Result */
+.igny8-final-content {
+  background-color: var(--igny8-content-bg, #f9f9f9);
+  border-left: 4px solid var(--igny8-content-border, #0073aa);
+  padding: 1.5em;
+  margin-top: 1.5em;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Spinner */
+.igny8-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #007cba;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

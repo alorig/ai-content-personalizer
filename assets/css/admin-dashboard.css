@@ -1,0 +1,176 @@
+/*==================================================
+  ## IGNY8 ADMIN DASHBOARD CSS
+  Description: Clean, minimal styling for Igny8 admin tabs and interface
+==================================================*/
+
+/* Tab Navigation */
+.igny8-tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.igny8-tab-nav li {
+    margin: 0;
+}
+
+.igny8-tab-nav a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #50575e;
+    background: #f6f7f7;
+    border: 1px solid #c3c4c7;
+    border-bottom: none;
+    margin-right: 4px;
+    border-radius: 4px 4px 0 0;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.igny8-tab-nav a:hover {
+    background: #fff;
+    color: #2271b1;
+    border-color: #2271b1;
+    
+}
+
+.igny8-tab-nav a.active {
+    background: #fff;
+    color: #2271b1;
+    border-color: #2271b1;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Tab Content */
+.igny8-tab-content {
+    display: none;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+}
+
+.igny8-tab-content.active {
+    display: block;
+}
+
+/* Tab Content Sections */
+.igny8-tab-section {
+    margin-bottom: 30px;
+}
+
+.igny8-tab-section:last-child {
+    margin-bottom: 0;
+}
+
+.igny8-tab-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dcdcde;
+    color: #1d2327;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Placeholder Content */
+.igny8-placeholder {
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+    color: #646970;
+}
+
+.igny8-placeholder h4 {
+    margin: 0 0 10px 0;
+    color: #1d2327;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.igny8-placeholder p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Settings Form Enhancements */
+.igny8-settings-form .form-table {
+    margin-top: 0;
+}
+
+.igny8-settings-form .form-table th {
+    width: 200px;
+    padding: 15px 10px 15px 0;
+}
+
+.igny8-settings-form .form-table td {
+    padding: 15px 10px;
+}
+
+/* Save Button Container */
+
+
+/* Post Type Status Indicators */
+.post-type-row.enabled {
+    background-color: #f0f8f0;
+    border-left: 4px solid #46b450;
+}
+
+.post-type-row.disabled {
+    background-color: #f8f8f8;
+    border-left: 4px solid #dcdcde;
+}
+
+.post-type-row.enabled th {
+    color: #46b450;
+    font-weight: 600;
+}
+
+.post-type-row.disabled th {
+    color: #646970;
+}
+
+.post-type-row .description strong {
+    color: #46b450;
+}
+
+.post-type-row.disabled .description strong {
+    color: #646970;
+}
+
+/* Responsive Design */
+@media (max-width: 782px) {
+    .igny8-tab-nav {
+        flex-direction: column;
+    }
+    
+    .igny8-tab-nav a {
+        border-radius: 4px;
+        margin-right: 0;
+        margin-bottom: 2px;
+        border-bottom: 1px solid #c3c4c7;
+    }
+    
+    .igny8-tab-nav a.active {
+        border-bottom: 1px solid #2271b1;
+        margin-bottom: 2px;
+    }
+    
+    .igny8-tab-content {
+        border-radius: 4px;
+        border-top: 1px solid #c3c4c7;
+    }
+} 
