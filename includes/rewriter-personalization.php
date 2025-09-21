@@ -87,6 +87,11 @@ function igny8_content_engine_save_settings() {
         update_option('igny8_content_engine_style', sanitize_text_field($_POST['igny8_content_engine_style']));
     }
     
+    // Save content generation prompt
+    if (isset($_POST['igny8_content_engine_prompt'])) {
+        update_option('igny8_content_engine_prompt', sanitize_textarea_field($_POST['igny8_content_engine_prompt']));
+    }
+    
     // Redirect to prevent resubmission
     $redirect_url = add_query_arg('settings-updated', 'true', admin_url('admin.php?page=' . $_GET['page']));
     wp_redirect($redirect_url);
@@ -669,6 +674,22 @@ Content: [CONTENT]')); ?></textarea>
                                             </div>
                                         </td>
                                         <td><?php esc_html_e('Prompt template for content personalization. Use [INPUTS] for user data and [CONTENT] for original content.','igny8'); ?></td>
+                                        <td>
+                                            <select class="igny8-table-select">
+                                                <option>Actions</option>
+                                                <option>Test</option>
+                                                <option>Reset</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php esc_html_e('Content Rewriter Prompt','igny8'); ?></td>
+                                        <td>
+                                            <div class="igny8-table-search">
+                                                <textarea name="igny8_content_engine_prompt" rows="8" cols="60" placeholder="<?php esc_attr_e('Enter content generation prompt...','igny8'); ?>"><?php echo esc_textarea(get_option('igny8_content_engine_prompt', '')); ?></textarea>
+                                            </div>
+                                        </td>
+                                        <td><?php esc_html_e('Define the AI prompt template used when rewriting or personalizing content. Variables from persona/context will be appended automatically.','igny8'); ?></td>
                                         <td>
                                             <select class="igny8-table-select">
                                                 <option>Actions</option>
