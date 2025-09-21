@@ -102,6 +102,7 @@ function igny8_render_filter_bar($filters) {
 /**
  * Render modern data table
  */
+/*
 function igny8_render_data_table($table_config) {
     echo '<div class="igny8-data-table-container">';
     
@@ -192,7 +193,7 @@ function igny8_render_data_table($table_config) {
     echo '</div>';
     
     echo '</div>';
-}
+}*/
 
 /**
  * Render card grid
