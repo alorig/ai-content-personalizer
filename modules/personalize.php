@@ -3,93 +3,80 @@ defined('ABSPATH') || exit;
 
 /*==================================================
   ## PERSONALIZE MODULE
-  Description: Personalization module for content personalization and regeneration
+  Description: Self-contained personalization module for content personalization
 ==================================================*/
+
+// Module configuration
+$igny8_personalize_options = [
+    'status'                => ['default' => 'enabled', 'sanitize' => 'sanitize_text_field'],
+    'enabled_post_types'    => ['default' => [], 'sanitize' => 'array_map_sanitize_text_field'],
+    'insertion_position'    => ['default' => 'before', 'sanitize' => 'sanitize_text_field'],
+    'display_mode'          => ['default' => 'always', 'sanitize' => 'sanitize_text_field'],
+    'teaser_text'           => ['default' => 'Want to read this as if it was written exclusively about you?', 'sanitize' => 'sanitize_textarea_field'],
+    'save_generated_content'=> ['default' => 1, 'sanitize' => 'intval'],
+    'save_variations'       => ['default' => 0, 'sanitize' => 'intval'],
+    'field_mode'            => ['default' => 'auto', 'sanitize' => 'sanitize_text_field'],
+    'detection_prompt'      => ['default' => 'Extract personalization intelligence from the content below. Identify what information about the reader would make this content more relevant and valuable.
+
+Return JSON with fields array. Each field should have:
+- "label": field name
+- "type": "text" or "select"
+- "examples": [2 sample values] for text fields
+- "options": [4-5 predefined values] for select fields
+
+IMPORTANT: All text fields must have meaningful examples. Never leave text fields empty or with placeholder text. Provide real, useful examples that help personalize the content.
+
+Content: [CONTENT]', 'sanitize' => 'sanitize_textarea_field'],
+    'custom_context'        => ['default' => '', 'sanitize' => 'sanitize_textarea_field'],
+    'include_page_context'  => ['default' => 1, 'sanitize' => 'intval'],
+    'content_length'        => ['default' => 'medium', 'sanitize' => 'sanitize_text_field'],
+    'tone'                  => ['default' => 'neutral', 'sanitize' => 'sanitize_text_field'],
+    'style'                 => ['default' => '', 'sanitize' => 'sanitize_text_field'],
+    'prompt'                => ['default' => '', 'sanitize' => 'sanitize_textarea_field'],
+    'rewrite_prompt'        => ['default' => 'Rewrite the following content to be personalized for a reader with these characteristics:
+
+[INPUTS]
+
+Original content:
+[CONTENT]
+
+Make the content feel like it was written specifically for this person while maintaining the original message and tone.', 'sanitize' => 'sanitize_textarea_field'],
+];
 
 /**
  * Save Content Engine settings
  */
 function igny8_content_engine_save_settings() {
+    global $igny8_personalize_options;
+    
     // Verify nonce
     if (!isset($_POST['igny8_content_engine_nonce']) || !wp_verify_nonce($_POST['igny8_content_engine_nonce'], 'igny8_content_engine_settings')) {
         wp_die('Security check failed');
     }
     
-    // Save global status
-    if (isset($_POST['igny8_content_engine_global_status'])) {
-        igny8_update_content_engine_status(sanitize_text_field($_POST['igny8_content_engine_global_status']));
-    }
-    
-    // Save enabled post types
-    if (isset($_POST['igny8_content_engine_enabled_post_types'])) {
-        $enabled_types = array_map('sanitize_text_field', $_POST['igny8_content_engine_enabled_post_types']);
-        igny8_update_content_engine_enabled_post_types($enabled_types);
-    } else {
-        igny8_clear_content_engine_enabled_post_types();
-    }
-    
-    // Save display settings
-    if (isset($_POST['igny8_content_engine_insertion_position'])) {
-        igny8_update_content_engine_insertion_position(sanitize_text_field($_POST['igny8_content_engine_insertion_position']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_display_mode'])) {
-        igny8_update_content_engine_display_mode(sanitize_text_field($_POST['igny8_content_engine_display_mode']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_teaser_text'])) {
-        igny8_update_content_engine_teaser_text(sanitize_text_field($_POST['igny8_content_engine_teaser_text']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_save_generated_content'])) {
-        igny8_update_content_engine_save_generated_content(1);
-    } else {
-        igny8_update_content_engine_save_generated_content(0);
-    }
-    
-    // Save variations setting
-    if (isset($_POST['igny8_content_engine_save_variations'])) {
-        igny8_update_content_engine_save_variations(1);
-    } else {
-        igny8_update_content_engine_save_variations(0);
-    }
-    
-    // Save context settings
-    if (isset($_POST['igny8_content_engine_field_mode'])) {
-        igny8_update_content_engine_field_mode(sanitize_text_field($_POST['igny8_content_engine_field_mode']));
-    }
-    
-    // Save variation settings
-    if (isset($_POST['igny8_content_engine_detection_prompt'])) {
-        igny8_update_content_engine_detection_prompt(sanitize_textarea_field($_POST['igny8_content_engine_detection_prompt']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_custom_context'])) {
-        igny8_update_content_engine_custom_context(sanitize_textarea_field($_POST['igny8_content_engine_custom_context']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_include_page_context'])) {
-        igny8_update_content_engine_include_page_context(1);
-    } else {
-        igny8_update_content_engine_include_page_context(0);
-    }
-    
-    // Save content generation settings
-    if (isset($_POST['igny8_content_engine_content_length'])) {
-        igny8_update_content_engine_content_length(sanitize_text_field($_POST['igny8_content_engine_content_length']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_tone'])) {
-        igny8_update_content_engine_tone(sanitize_text_field($_POST['igny8_content_engine_tone']));
-    }
-    
-    if (isset($_POST['igny8_content_engine_style'])) {
-        igny8_update_content_engine_style(sanitize_text_field($_POST['igny8_content_engine_style']));
-    }
-    
-    // Save content generation prompt
-    if (isset($_POST['igny8_content_engine_prompt'])) {
-        igny8_update_content_engine_prompt(sanitize_textarea_field($_POST['igny8_content_engine_prompt']));
+    // Loop through config and save each option
+    foreach ($igny8_personalize_options as $key => $config) {
+        $post_key = "igny8_{$key}";
+        
+        if (isset($_POST[$post_key])) {
+            $value = $_POST[$post_key];
+            
+            // Apply sanitization based on config
+            if (isset($config['sanitize']) && function_exists($config['sanitize'])) {
+                if ($config['sanitize'] === 'array_map_sanitize_text_field') {
+                    $value = array_map('sanitize_text_field', $value);
+                } else {
+                    $value = call_user_func($config['sanitize'], $value);
+                }
+            }
+            
+            igny8_option('personalize', $key, $value);
+        } else {
+            // Handle checkboxes and other fields that might not be present
+            if (in_array($key, ['save_generated_content', 'save_variations', 'include_page_context'])) {
+                igny8_option('personalize', $key, 0);
+            }
+        }
     }
     
     // Redirect to prevent resubmission
@@ -108,7 +95,7 @@ function igny8_inject_shortcode_into_content($content) {
     }
     
     // Check if Content Engine is enabled globally
-    $global_status = igny8_get_content_engine_status();
+    $global_status = igny8_option('personalize', 'status');
     if ($global_status !== 'enabled') {
         return $content;
     }
@@ -120,16 +107,16 @@ function igny8_inject_shortcode_into_content($content) {
     }
     
     // Check if this post type is enabled for personalization
-    $enabled_post_types = igny8_get_content_engine_enabled_post_types();
+    $enabled_post_types = igny8_option('personalize', 'enabled_post_types');
     if (!in_array($post_type, $enabled_post_types)) {
         return $content;
     }
     
     // Get insertion position
-    $insertion_position = igny8_get_content_engine_insertion_position();
+    $insertion_position = igny8_option('personalize', 'insertion_position');
     
     // Get display mode
-    $display_mode = igny8_get_content_engine_display_mode();
+    $display_mode = igny8_option('personalize', 'display_mode');
     
     // Check if we should show personalization based on display mode
     if ($display_mode === 'logged_in' && !is_user_logged_in()) {
@@ -154,9 +141,6 @@ function igny8_inject_shortcode_into_content($content) {
             return $shortcode . $content;
     }
 }
-
-// Hook into the_content filter
-add_filter('the_content', 'igny8_inject_shortcode_into_content');
 
 /**
  * Content Engine admin page renderer
@@ -190,11 +174,190 @@ function igny8_content_engine_admin_page() {
         echo '<div class="notice notice-success is-dismissible"><p>Rewrite & Personalization settings saved successfully.</p></div>';
     }
     
-    // Get current settings
-    $enabled_post_types = igny8_get_content_engine_enabled_post_types();
-    $content_engine_status = igny8_get_content_engine_status();
-    
-    // Include the UI renderer
-    require_once plugin_dir_path(__FILE__) . '../globals/php/ui-render.php';
-    igny8_render_content_engine_admin_page($enabled_post_types, $content_engine_status);
+    ?>
+    <div class="wrap igny8-admin-page">
+        <h1><?php esc_html_e('Rewrite & Personalization', 'igny8'); ?></h1>
+        
+        <form method="post" action="">
+            <?php wp_nonce_field('igny8_content_engine_settings', 'igny8_content_engine_nonce'); ?>
+            
+            <div class="igny8-admin-grid">
+                <!-- Global Settings Card -->
+                <div class="igny8-card">
+                    <div class="igny8-card-header">
+                        <h2><?php esc_html_e('Global Settings', 'igny8'); ?></h2>
+                    </div>
+                    <div class="igny8-card-body">
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Status', 'igny8'); ?></th>
+                                <td>
+                                    <select name="igny8_status">
+                                        <option value="enabled" <?php selected(igny8_option('personalize', 'status'), 'enabled'); ?>><?php esc_html_e('Enabled', 'igny8'); ?></option>
+                                        <option value="disabled" <?php selected(igny8_option('personalize', 'status'), 'disabled'); ?>><?php esc_html_e('Disabled', 'igny8'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Enabled Post Types', 'igny8'); ?></th>
+                                <td>
+                                    <?php
+                                    $post_types = get_post_types(['public' => true], 'objects');
+                                    $enabled_types = igny8_option('personalize', 'enabled_post_types');
+                                    foreach ($post_types as $post_type) {
+                                        $checked = in_array($post_type->name, $enabled_types) ? 'checked' : '';
+                                        echo '<label><input type="checkbox" name="igny8_enabled_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '> ' . esc_html($post_type->label) . '</label><br>';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Display Settings Card -->
+                <div class="igny8-card">
+                    <div class="igny8-card-header">
+                        <h2><?php esc_html_e('Display Settings', 'igny8'); ?></h2>
+                    </div>
+                    <div class="igny8-card-body">
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Insertion Position', 'igny8'); ?></th>
+                                <td>
+                                    <select name="igny8_insertion_position">
+                                        <option value="before" <?php selected(igny8_option('personalize', 'insertion_position'), 'before'); ?>><?php esc_html_e('Before Content', 'igny8'); ?></option>
+                                        <option value="after" <?php selected(igny8_option('personalize', 'insertion_position'), 'after'); ?>><?php esc_html_e('After Content', 'igny8'); ?></option>
+                                        <option value="replace" <?php selected(igny8_option('personalize', 'insertion_position'), 'replace'); ?>><?php esc_html_e('Replace Content', 'igny8'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Display Mode', 'igny8'); ?></th>
+                                <td>
+                                    <select name="igny8_display_mode">
+                                        <option value="always" <?php selected(igny8_option('personalize', 'display_mode'), 'always'); ?>><?php esc_html_e('Always', 'igny8'); ?></option>
+                                        <option value="logged_in" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_in'); ?>><?php esc_html_e('Logged In Users Only', 'igny8'); ?></option>
+                                        <option value="logged_out" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_out'); ?>><?php esc_html_e('Logged Out Users Only', 'igny8'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Teaser Text', 'igny8'); ?></th>
+                                <td>
+                                    <textarea name="igny8_teaser_text" rows="3" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'teaser_text')); ?></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Content Generation Settings Card -->
+                <div class="igny8-card">
+                    <div class="igny8-card-header">
+                        <h2><?php esc_html_e('Content Generation', 'igny8'); ?></h2>
+                    </div>
+                    <div class="igny8-card-body">
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Content Length', 'igny8'); ?></th>
+                                <td>
+                                    <select name="igny8_content_length">
+                                        <option value="short" <?php selected(igny8_option('personalize', 'content_length'), 'short'); ?>><?php esc_html_e('Short (150 words)', 'igny8'); ?></option>
+                                        <option value="medium" <?php selected(igny8_option('personalize', 'content_length'), 'medium'); ?>><?php esc_html_e('Medium (300 words)', 'igny8'); ?></option>
+                                        <option value="long" <?php selected(igny8_option('personalize', 'content_length'), 'long'); ?>><?php esc_html_e('Long (500 words)', 'igny8'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Tone', 'igny8'); ?></th>
+                                <td>
+                                    <input type="text" name="igny8_tone" value="<?php echo esc_attr(igny8_option('personalize', 'tone')); ?>" class="regular-text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Style', 'igny8'); ?></th>
+                                <td>
+                                    <input type="text" name="igny8_style" value="<?php echo esc_attr(igny8_option('personalize', 'style')); ?>" class="regular-text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Custom Prompt', 'igny8'); ?></th>
+                                <td>
+                                    <textarea name="igny8_prompt" rows="5" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'prompt')); ?></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Advanced Settings Card -->
+                <div class="igny8-card">
+                    <div class="igny8-card-header">
+                        <h2><?php esc_html_e('Advanced Settings', 'igny8'); ?></h2>
+                    </div>
+                    <div class="igny8-card-body">
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Field Detection Mode', 'igny8'); ?></th>
+                                <td>
+                                    <select name="igny8_field_mode">
+                                        <option value="auto" <?php selected(igny8_option('personalize', 'field_mode'), 'auto'); ?>><?php esc_html_e('Auto Detect', 'igny8'); ?></option>
+                                        <option value="manual" <?php selected(igny8_option('personalize', 'field_mode'), 'manual'); ?>><?php esc_html_e('Manual Configuration', 'igny8'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Detection Prompt', 'igny8'); ?></th>
+                                <td>
+                                    <textarea name="igny8_detection_prompt" rows="8" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'detection_prompt')); ?></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Custom Context', 'igny8'); ?></th>
+                                <td>
+                                    <textarea name="igny8_custom_context" rows="4" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'custom_context')); ?></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Include Page Context', 'igny8'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="igny8_include_page_context" value="1" <?php checked(igny8_option('personalize', 'include_page_context'), 1); ?> />
+                                        <?php esc_html_e('Include page content as context for personalization', 'igny8'); ?>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Save Generated Content', 'igny8'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="igny8_save_generated_content" value="1" <?php checked(igny8_option('personalize', 'save_generated_content'), 1); ?> />
+                                        <?php esc_html_e('Save generated content for future use', 'igny8'); ?>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Save Variations', 'igny8'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="igny8_save_variations" value="1" <?php checked(igny8_option('personalize', 'save_variations'), 1); ?> />
+                                        <?php esc_html_e('Save multiple variations of generated content', 'igny8'); ?>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="submit">
+                <input type="submit" name="submit" class="button-primary" value="<?php esc_attr_e('Save Settings', 'igny8'); ?>" />
+            </p>
+        </form>
+    </div>
+    <?php
 }
+
+// Hook into the_content filter
+add_filter('the_content', 'igny8_inject_shortcode_into_content');

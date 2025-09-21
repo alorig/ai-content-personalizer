@@ -20,7 +20,6 @@ require_once plugin_dir_path(__FILE__) . 'includes/admin-ui.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-enqueue.php';
 // Load new modular structure
 require_once plugin_dir_path(__FILE__) . 'modules/personalize.php';
-require_once plugin_dir_path(__FILE__) . 'globals/php/ui-render.php';
 require_once plugin_dir_path(__FILE__) . 'globals/php/options.php';
 require_once plugin_dir_path(__FILE__) . 'globals/php/actions.php';
 require_once plugin_dir_path(__FILE__) . 'globals/php/openai.php';
