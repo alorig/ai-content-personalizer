@@ -64,4 +64,3 @@ function igny8_install() {
     do_action('igny8_after_install');
 
 }
-
