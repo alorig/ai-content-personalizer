@@ -50,30 +50,6 @@ function igny8_settings_page() {
 
             <!-- Connections & API Keys Tab -->
             <div id="connections-api" class="igny8-tab-content active">
-                <!-- Metric Cards -->
-                <div class="igny8-metric-cards">
-                    <div class="igny8-metric-card">
-                        <div class="igny8-metric-value">3</div>
-                        <div class="igny8-metric-label">Connected APIs</div>
-                        <div class="igny8-metric-change positive">+1</div>
-                    </div>
-                    <div class="igny8-metric-card">
-                        <div class="igny8-metric-value">89%</div>
-                        <div class="igny8-metric-label">API Health</div>
-                        <div class="igny8-metric-change positive">+5%</div>
-                    </div>
-                    <div class="igny8-metric-card">
-                        <div class="igny8-metric-value">156</div>
-                        <div class="igny8-metric-label">Requests Today</div>
-                        <div class="igny8-metric-change positive">+12%</div>
-                    </div>
-                    <div class="igny8-metric-card">
-                        <div class="igny8-metric-value">2</div>
-                        <div class="igny8-metric-label">Failed Requests</div>
-                        <div class="igny8-metric-change negative">-1</div>
-                    </div>
-                </div>
-
                 <!-- API Configuration Table -->
                 <div class="igny8-data-table-container">
                     <div class="igny8-table-header">
@@ -123,9 +99,9 @@ function igny8_settings_page() {
                     </div>
                 </div>
                 
-                <!-- API Key Configuration -->
-                <div class="igny8-card-grid">
-                    <div class="igny8-card igny8-card-blue">
+                <!-- API Configuration Cards -->
+                <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="igny8-card igny8-card-blue" style="flex: 1; min-width: 300px;">
                         <div class="igny8-card-header">
                             <div class="igny8-card-icon igny8-icon-blue"></div>
                             <h3><?php esc_html_e('OpenAI API Key','igny8'); ?></h3>
@@ -139,7 +115,7 @@ function igny8_settings_page() {
                         </div>
                     </div>
                     
-                    <div class="igny8-card igny8-card-green">
+                    <div class="igny8-card igny8-card-green" style="flex: 1; min-width: 300px;">
                         <div class="igny8-card-header">
                             <div class="igny8-card-icon igny8-icon-green"></div>
                             <h3><?php esc_html_e('AI Model Selection','igny8'); ?></h3>
@@ -174,11 +150,8 @@ function igny8_settings_page() {
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- API Testing -->
-                <div class="igny8-card-grid">
-                    <div class="igny8-card igny8-card-purple">
+                    
+                    <div class="igny8-card igny8-card-purple" style="flex: 1; min-width: 300px;">
                         <div class="igny8-card-header">
                             <div class="igny8-card-icon igny8-icon-purple"></div>
                             <h3><?php esc_html_e('API Testing','igny8'); ?></h3>
