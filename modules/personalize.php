@@ -17,79 +17,79 @@ function igny8_content_engine_save_settings() {
     
     // Save global status
     if (isset($_POST['igny8_content_engine_global_status'])) {
-        update_option('igny8_content_engine_global_status', sanitize_text_field($_POST['igny8_content_engine_global_status']));
+        igny8_update_content_engine_status(sanitize_text_field($_POST['igny8_content_engine_global_status']));
     }
     
     // Save enabled post types
     if (isset($_POST['igny8_content_engine_enabled_post_types'])) {
         $enabled_types = array_map('sanitize_text_field', $_POST['igny8_content_engine_enabled_post_types']);
-        update_option('igny8_content_engine_enabled_post_types', $enabled_types);
+        igny8_update_content_engine_enabled_post_types($enabled_types);
     } else {
-        update_option('igny8_content_engine_enabled_post_types', []);
+        igny8_clear_content_engine_enabled_post_types();
     }
     
     // Save display settings
     if (isset($_POST['igny8_content_engine_insertion_position'])) {
-        update_option('igny8_content_engine_insertion_position', sanitize_text_field($_POST['igny8_content_engine_insertion_position']));
+        igny8_update_content_engine_insertion_position(sanitize_text_field($_POST['igny8_content_engine_insertion_position']));
     }
     
     if (isset($_POST['igny8_content_engine_display_mode'])) {
-        update_option('igny8_content_engine_display_mode', sanitize_text_field($_POST['igny8_content_engine_display_mode']));
+        igny8_update_content_engine_display_mode(sanitize_text_field($_POST['igny8_content_engine_display_mode']));
     }
     
     if (isset($_POST['igny8_content_engine_teaser_text'])) {
-        update_option('igny8_content_engine_teaser_text', sanitize_text_field($_POST['igny8_content_engine_teaser_text']));
+        igny8_update_content_engine_teaser_text(sanitize_text_field($_POST['igny8_content_engine_teaser_text']));
     }
     
     if (isset($_POST['igny8_content_engine_save_generated_content'])) {
-        update_option('igny8_content_engine_save_generated_content', 1);
+        igny8_update_content_engine_save_generated_content(1);
     } else {
-        update_option('igny8_content_engine_save_generated_content', 0);
+        igny8_update_content_engine_save_generated_content(0);
     }
     
     // Save variations setting
     if (isset($_POST['igny8_content_engine_save_variations'])) {
-        update_option('igny8_content_engine_save_variations', 1);
+        igny8_update_content_engine_save_variations(1);
     } else {
-        update_option('igny8_content_engine_save_variations', 0);
+        igny8_update_content_engine_save_variations(0);
     }
     
     // Save context settings
     if (isset($_POST['igny8_content_engine_field_mode'])) {
-        update_option('igny8_content_engine_field_mode', sanitize_text_field($_POST['igny8_content_engine_field_mode']));
+        igny8_update_content_engine_field_mode(sanitize_text_field($_POST['igny8_content_engine_field_mode']));
     }
     
     // Save variation settings
     if (isset($_POST['igny8_content_engine_detection_prompt'])) {
-        update_option('igny8_content_engine_detection_prompt', sanitize_textarea_field($_POST['igny8_content_engine_detection_prompt']));
+        igny8_update_content_engine_detection_prompt(sanitize_textarea_field($_POST['igny8_content_engine_detection_prompt']));
     }
     
     if (isset($_POST['igny8_content_engine_custom_context'])) {
-        update_option('igny8_content_engine_custom_context', sanitize_textarea_field($_POST['igny8_content_engine_custom_context']));
+        igny8_update_content_engine_custom_context(sanitize_textarea_field($_POST['igny8_content_engine_custom_context']));
     }
     
     if (isset($_POST['igny8_content_engine_include_page_context'])) {
-        update_option('igny8_content_engine_include_page_context', 1);
+        igny8_update_content_engine_include_page_context(1);
     } else {
-        update_option('igny8_content_engine_include_page_context', 0);
+        igny8_update_content_engine_include_page_context(0);
     }
     
     // Save content generation settings
     if (isset($_POST['igny8_content_engine_content_length'])) {
-        update_option('igny8_content_engine_content_length', sanitize_text_field($_POST['igny8_content_engine_content_length']));
+        igny8_update_content_engine_content_length(sanitize_text_field($_POST['igny8_content_engine_content_length']));
     }
     
     if (isset($_POST['igny8_content_engine_tone'])) {
-        update_option('igny8_content_engine_tone', sanitize_text_field($_POST['igny8_content_engine_tone']));
+        igny8_update_content_engine_tone(sanitize_text_field($_POST['igny8_content_engine_tone']));
     }
     
     if (isset($_POST['igny8_content_engine_style'])) {
-        update_option('igny8_content_engine_style', sanitize_text_field($_POST['igny8_content_engine_style']));
+        igny8_update_content_engine_style(sanitize_text_field($_POST['igny8_content_engine_style']));
     }
     
     // Save content generation prompt
     if (isset($_POST['igny8_content_engine_prompt'])) {
-        update_option('igny8_content_engine_prompt', sanitize_textarea_field($_POST['igny8_content_engine_prompt']));
+        igny8_update_content_engine_prompt(sanitize_textarea_field($_POST['igny8_content_engine_prompt']));
     }
     
     // Redirect to prevent resubmission
@@ -108,7 +108,7 @@ function igny8_inject_shortcode_into_content($content) {
     }
     
     // Check if Content Engine is enabled globally
-    $global_status = get_option('igny8_content_engine_global_status', 'disabled');
+    $global_status = igny8_get_content_engine_status();
     if ($global_status !== 'enabled') {
         return $content;
     }
@@ -120,16 +120,16 @@ function igny8_inject_shortcode_into_content($content) {
     }
     
     // Check if this post type is enabled for personalization
-    $enabled_post_types = get_option('igny8_content_engine_enabled_post_types', []);
+    $enabled_post_types = igny8_get_content_engine_enabled_post_types();
     if (!in_array($post_type, $enabled_post_types)) {
         return $content;
     }
     
     // Get insertion position
-    $insertion_position = get_option('igny8_content_engine_insertion_position', 'before');
+    $insertion_position = igny8_get_content_engine_insertion_position();
     
     // Get display mode
-    $display_mode = get_option('igny8_content_engine_display_mode', 'always');
+    $display_mode = igny8_get_content_engine_display_mode();
     
     // Check if we should show personalization based on display mode
     if ($display_mode === 'logged_in' && !is_user_logged_in()) {
@@ -191,8 +191,8 @@ function igny8_content_engine_admin_page() {
     }
     
     // Get current settings
-    $enabled_post_types = get_option('igny8_content_engine_enabled_post_types', []);
-    $content_engine_status = get_option('igny8_content_engine_global_status', 'enabled');
+    $enabled_post_types = igny8_get_content_engine_enabled_post_types();
+    $content_engine_status = igny8_get_content_engine_status();
     
     // Include the UI renderer
     require_once plugin_dir_path(__FILE__) . '../globals/php/ui-render.php';
