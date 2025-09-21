@@ -136,68 +136,67 @@ function igny8_ajax_get_fields() {
 
     // 🟡 If mode is 'dynamic' (handled below this block), this logic does not run
 
+    // 🔹 DYNAMIC MODE: GPT-based field detection and rendering
+    // This block runs only if the admin has selected 'dynamic' mode (instead of 'fixed')
 
-// 🔹 DYNAMIC MODE: GPT-based field detection and rendering
-// This block runs only if the admin has selected 'dynamic' mode (instead of 'fixed')
+    $post_id = intval($_GET['post_id']); // 🎯 Post ID is passed via data-post-id for context
+    $api_key = get_option('igny8_api_key');
+    $model = get_option('igny8_model', 'gpt-4.1_standard');
+    require_once plugin_dir_path(__FILE__) . 'utils.php';
+    $model = igny8_normalize_model($model);
 
-$post_id = intval($_GET['post_id']); // 🎯 Post ID is passed via data-post-id for context
-$api_key = get_option('igny8_api_key');
-$model = get_option('igny8_model', 'gpt-4.1_standard');
-require_once plugin_dir_path(__FILE__) . 'utils.php';
-$model = igny8_normalize_model($model);
+    // Check if Content Engine is enabled and use Content Engine-specific settings if available
+    $content_engine_status = get_option('igny8_content_engine_global_status', 'enabled');
+    $post_type = get_post_type($post_id);
+    $enabled_post_types = get_option('igny8_content_engine_enabled_post_types', []);
 
-// Check if Content Engine is enabled and use Content Engine-specific settings if available
-$content_engine_status = get_option('igny8_content_engine_global_status', 'enabled');
-$post_type = get_post_type($post_id);
-$enabled_post_types = get_option('igny8_content_engine_enabled_post_types', []);
-
-if ($content_engine_status === 'enabled' && in_array($post_type, $enabled_post_types)) {
-    // Use Content Engine-specific settings
-    $scope = get_option('igny8_content_engine_input_scope', get_option('igny8_input_scope', '300'));
-    $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
-} else {
-    // Use global settings
-    $scope = get_option('igny8_input_scope', 'title');
-    $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
-}
-
-// 🔁 STEP 1: Load content from post based on scope
-$content = get_igny8_content_scope($post_id, $scope); // returns title/content/body with dynamic message
-
-// Add custom context if enabled
-$include_page_context = get_option('igny8_content_engine_include_page_context', 0) === '1';
-if ($include_page_context) {
-    $custom_context = get_option('igny8_content_engine_context_source', '');
-    if (!empty($custom_context)) {
-        $content .= "\n\nAdditional Context:\n" . do_shortcode($custom_context);
-    }
-}
-
-$prompt = str_replace('[CONTENT]', $content, $prompt_template); // inject content into prompt
-
-// 🔁 STEP 2: Check for existing field structure in cache
-$cached = get_post_meta($post_id, '_igny8_fields', true);
-
-if (is_array($cached)) {
-    $fields = $cached; // 🧠 Use cached GPT result if available
-} else {
-    // ⚙️ STEP 3: Call OpenAI API for dynamic field structure
-    $response = igny8_call_openai($prompt, $api_key, $model);
-    $fields = json_decode($response, true);
-
-    // 🛑 Error handling for invalid GPT output
-    if (!is_array($fields)) {
-        echo "<strong>❌ Invalid GPT response:</strong><br><pre>" . esc_html($response) . "</pre>";
-        wp_die();
+    if ($content_engine_status === 'enabled' && in_array($post_type, $enabled_post_types)) {
+        // Use Content Engine-specific settings
+        $scope = get_option('igny8_content_engine_input_scope', get_option('igny8_input_scope', '300'));
+        $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
+    } else {
+        // Use global settings
+        $scope = get_option('igny8_input_scope', 'title');
+        $prompt_template = get_option('igny8_content_engine_detection_prompt', '');
     }
 
-    // 🔧 Post-process fields to ensure text fields have meaningful examples
-    if (isset($fields['fields']) && is_array($fields['fields'])) {
-        foreach ($fields['fields'] as &$field) {
-            if (($field['type'] ?? 'text') === 'text') {
-                // Ensure text fields have meaningful examples
-                if (empty($field['examples']) || !is_array($field['examples'])) {
-                    $field['examples'] = ['Example 1', 'Example 2'];
+    // 🔁 STEP 1: Load content from post based on scope
+    $content = get_igny8_content_scope($post_id, $scope); // returns title/content/body with dynamic message
+
+    // Add custom context if enabled
+    $include_page_context = get_option('igny8_content_engine_include_page_context', 0) === '1';
+    if ($include_page_context) {
+        $custom_context = get_option('igny8_content_engine_context_source', '');
+        if (!empty($custom_context)) {
+            $content .= "\n\nAdditional Context:\n" . do_shortcode($custom_context);
+        }
+    }
+
+    $prompt = str_replace('[CONTENT]', $content, $prompt_template); // inject content into prompt
+
+    // 🔁 STEP 2: Check for existing field structure in cache
+    $cached = get_post_meta($post_id, '_igny8_fields', true);
+
+    if (is_array($cached)) {
+        $fields = $cached; // 🧠 Use cached GPT result if available
+    } else {
+        // ⚙️ STEP 3: Call OpenAI API for dynamic field structure
+        $response = igny8_call_openai($prompt, $api_key, $model);
+        $fields = json_decode($response, true);
+
+        // 🛑 Error handling for invalid GPT output
+        if (!is_array($fields)) {
+            echo "<strong>❌ Invalid GPT response:</strong><br><pre>" . esc_html($response) . "</pre>";
+            wp_die();
+        }
+
+        // 🔧 Post-process fields to ensure text fields have meaningful examples
+        if (isset($fields['fields']) && is_array($fields['fields'])) {
+            foreach ($fields['fields'] as &$field) {
+                if (($field['type'] ?? 'text') === 'text') {
+                    // Ensure text fields have meaningful examples
+                    if (empty($field['examples']) || !is_array($field['examples'])) {
+                        $field['examples'] = ['Example 1', 'Example 2'];
                 } else {
                     // Filter out empty examples and ensure we have at least 2
                     $field['examples'] = array_filter($field['examples']);
@@ -215,67 +214,67 @@ if (is_array($cached)) {
     // 🔢 STEP 4: Extract fields from GPT result
     $fieldset = $fields['fields'] ?? [];
 
-// 🔘 Start rendering the dynamic form
-echo '<form id="igny8-form">';
+    // 🔘 Start rendering the dynamic form
+    echo '<form id="igny8-form">';
 
-// 🌐 STEP 5: Auto-detect user's city using IP API (client-side JS)
-echo "<script>
-    async function getCity() {
-        try {
-            const res = await fetch('http://ip-api.com/json');
-            const data = await res.json();
-            return data.city || '';
-        } catch { return ''; }
-    }
-    document.addEventListener('DOMContentLoaded', async () => {
-        const city = await getCity();
-        const cityInputs = document.querySelectorAll('[name=\"City\"], [name=\"Location\"]');
-        cityInputs.forEach(el => el.value = city);
-    });
-</script>";
-
-// 🔁 STEP 6: Render each field returned by GPT
-foreach ($fieldset as $field) {
-    $label = esc_html($field['label'] ?? $field['name'] ?? '');
-    $field_name = esc_attr($field['name'] ?? $field['label'] ?? ''); // Use consistent field name
-    $field_id = esc_attr($field['id'] ?? $field_name); // Use field ID if available
-
-    // 📦 Handle select fields
-    if (($field['type'] ?? '') === 'select') {
-        echo "<label for='$field_id'>" . ucwords($label) . ":</label><select name='$field_name' id='$field_id'>";
-        foreach ($field['options'] ?? [] as $option) {
-            echo "<option value='" . esc_attr($option) . "'>" . esc_html(ucwords($option)) . "</option>";
+    // 🌐 STEP 5: Auto-detect user's city using IP API (client-side JS)
+    echo "<script>
+        async function getCity() {
+            try {
+                const res = await fetch('http://ip-api.com/json');
+                const data = await res.json();
+                return data.city || '';
+            } catch { return ''; }
         }
-        echo "</select><br><br>";
+        document.addEventListener('DOMContentLoaded', async () => {
+            const city = await getCity();
+            const cityInputs = document.querySelectorAll('[name=\"City\"], [name=\"Location\"]');
+            cityInputs.forEach(el => el.value = city);
+        });
+    </script>";
 
-    } else {
-        // ✍️ Render text inputs with examples as values
-        $value = '';
+    // 🔁 STEP 6: Render each field returned by GPT
+    foreach ($fieldset as $field) {
+        $label = esc_html($field['label'] ?? $field['name'] ?? '');
+        $field_name = esc_attr($field['name'] ?? $field['label'] ?? ''); // Use consistent field name
+        $field_id = esc_attr($field['id'] ?? $field_name); // Use field ID if available
+
+        // 📦 Handle select fields
+        if (($field['type'] ?? '') === 'select') {
+            echo "<label for='$field_id'>" . ucwords($label) . ":</label><select name='$field_name' id='$field_id'>";
+            foreach ($field['options'] ?? [] as $option) {
+                echo "<option value='" . esc_attr($option) . "'>" . esc_html(ucwords($option)) . "</option>";
+            }
+            echo "</select><br><br>";
+
+        } else {
+            // ✍️ Render text inputs with examples as values
+            $value = '';
+            
+            // Use examples if available
+            if (isset($field['examples']) && !empty($field['examples'])) {
+                $value = implode(', ', array_filter($field['examples']));
+            }
+            
+            // Capitalize the value
+            $value = ucwords($value);
         
-        // Use examples if available
-        if (isset($field['examples']) && !empty($field['examples'])) {
-            $value = implode(', ', array_filter($field['examples']));
+            echo "<label for='$field_id'>" . ucwords($label) . ":</label><input type='text' name='$field_name' id='$field_id' value='" . esc_attr($value) . "' /><br><br>";
         }
-        
-        // Capitalize the value
-        $value = ucwords($value);
-        
-        echo "<label for='$field_id'>" . ucwords($label) . ":</label><input type='text' name='$field_name' id='$field_id' value='" . esc_attr($value) . "' /><br><br>";
     }
-}
 
-// 🔘 Final submit button and container for GPT output
-echo '<button type="submit" class="button">Personalize</button>';
+    // 🔘 Final submit button and container for GPT output
+    echo '<button type="submit" class="button">Personalize</button>';
 
-// Add save button for author/admin roles when auto-save is disabled
-if (current_user_can('edit_posts') && get_option('igny8_content_engine_save_variations', 1) !== '1') {
-    echo '<button type="button" class="button igny8-save-btn" onclick="igny8_save_content_manual(this)" style="margin-left: 10px; background-color: #28a745; color: white;">💾 Save Content</button>';
-}
+    // Add save button for author/admin roles when auto-save is disabled
+    if (current_user_can('edit_posts') && get_option('igny8_content_engine_save_variations', 1) !== '1') {
+        echo '<button type="button" class="button igny8-save-btn" onclick="igny8_save_content_manual(this)" style="margin-left: 10px; background-color: #28a745; color: white;">💾 Save Content</button>';
+    }
 
-echo '</form><div id="igny8-generated-content"></div>';
+    echo '</form><div id="igny8-generated-content"></div>';
 
-// ✅ End the AJAX response cleanly
-wp_die();
+    // ✅ End the AJAX response cleanly
+    wp_die();
 }
 
 function igny8_ajax_generate_custom() {
