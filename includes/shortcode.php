@@ -66,7 +66,7 @@ function igny8_shortcode_handler($atts) {
     }
 
     // 🔁 Step 3b: (Re)store form field values explicitly for HTML generation
-    $form_fields_value = $atts['form_fields'];
+    $form_fields_value = $atts['form_fields'] ?? '';
 
     // 🧱 Step 4: Start output buffering for HTML return
     ob_start();
