@@ -2,8 +2,8 @@
 /**
  * Plugin Name: AI Content Personalizer & Rewriter
  * Plugin URI:  https://github.com/alorig/ai-content-personalizer
- * Description: Free plugin to personalize or rewrite WordPress content for each visitor using AI. Frontend personalization, unlimited variations, OpenAI-powered.
- * Version:     0.1.1
+ * Description: Free IN this version we are updating to matsh Igny8 OS strcuture previous version as in 0.1 everythign is working fine.
+ * Version:     1.0
  * Author:      Alorig Systems
  * Author URI:  https://alorig.com
  * License:     GPLv2 or later
@@ -18,7 +18,15 @@ require_once plugin_dir_path(__FILE__) . 'install.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-ui.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-enqueue.php';
-require_once plugin_dir_path(__FILE__) . 'includes/rewriter-personalization.php';
+// Load new modular structure
+require_once plugin_dir_path(__FILE__) . 'modules/personalize.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/ui-render.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/options.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/actions.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/openai.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/shortcode.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/db.php';
+require_once plugin_dir_path(__FILE__) . 'globals/php/utils.php';
 
 
 require_once plugin_dir_path(__FILE__) . 'includes/data-model.php';
