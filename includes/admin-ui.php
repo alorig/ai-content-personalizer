@@ -40,8 +40,6 @@ function igny8_settings_page() {
         
         <ul class="igny8-tab-nav">
             <li><a href="#connections-api" class="active">Connections & API Keys</a></li>
-            <li><a href="#styling-ui">Styling & UI Preferences</a></li>
-            <li><a href="#diagnostics-dev">Diagnostics & Developer Tools</a></li>
         </ul>
         
         <form method="post" action="options.php" class="igny8-settings-form">
@@ -210,25 +208,6 @@ function igny8_settings_page() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Other tabs content would go here -->
-            <div id="styling-ui" class="igny8-tab-content">
-                <div class="igny8-help-section">
-                    <div class="igny8-help-title"><?php esc_html_e('Styling & UI Preferences','igny8'); ?></div>
-                    <div class="igny8-help-content">
-                        <p><?php esc_html_e('Customize the appearance and behavior of your Igny8 admin interface.','igny8'); ?></p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="diagnostics-dev" class="igny8-tab-content">
-                <div class="igny8-help-section">
-                    <div class="igny8-help-title"><?php esc_html_e('Diagnostics & Developer Tools','igny8'); ?></div>
-                    <div class="igny8-help-content">
-                        <p><?php esc_html_e('Debug tools and system information for troubleshooting.','igny8'); ?></p>
                     </div>
                 </div>
             </div>
