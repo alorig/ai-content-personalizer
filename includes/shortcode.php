@@ -154,6 +154,20 @@ function igny8_shortcode_handler($atts) {
     <?php endif; ?>
 	
 	<!-- 🔒 Step 7b: Inject admin-defined context (hidden) -->
+<?php
+// Check if Content Engine is enabled and use Content Engine-specific context if available
+if ($content_engine_status === 'enabled' && in_array($post_type, $enabled_post_types)) {
+    $context_raw = get_option('igny8_content_engine_context_source', get_option('igny8_context_source', ''));
+} else {
+    $context_raw = get_option('igny8_context_source', '');
+}
+
+if (!empty($context_raw)) {
+    echo '<div id="igny8-context" style="display:none;">';
+    echo do_shortcode($context_raw); // evaluate here at output time
+    echo '</div>';
+}
+?>
 
 
     <!-- 🧪 Step 8: Output placeholder for form + GPT result -->
