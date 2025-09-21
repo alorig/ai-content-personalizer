@@ -198,7 +198,7 @@ function igny8_render_data_table($table_config) {
 /**
  * Render card grid
  */
-function igny8_render_card_grid($grid_config) {
+/*function igny8_render_card_grid($grid_config) {
     echo '<div class="igny8-card-grid">';
     
     for ($i = 1; $i <= 6; $i++) {
@@ -222,10 +222,11 @@ function igny8_render_card_grid($grid_config) {
     
     echo '</div>';
 }
-
+*/
 /**
  * Render dashboard charts
  */
+/*
 function igny8_render_dashboard_charts($charts) {
     echo '<div class="igny8-dashboard-charts">';
     
@@ -257,6 +258,7 @@ function igny8_render_dashboard_charts($charts) {
     
     echo '</div>';
 }
+    */
 
 /**
  * Render status badge
@@ -278,6 +280,7 @@ function igny8_render_tooltip($content, $icon = 'info') {
 /**
  * Render collapsible help section
  */
+/*
 function igny8_render_help_section($title, $content) {
     echo '<div class="igny8-help-section">';
     echo '<button type="button" class="igny8-help-toggle">';
@@ -290,10 +293,11 @@ function igny8_render_help_section($title, $content) {
     echo '</div>';
     echo '</div>';
 }
-
+*/
 /**
  * Render modal structure
  */
+/*
 function igny8_render_modal($modal_id, $title, $content) {
     echo '<div id="' . esc_attr($modal_id) . '" class="igny8-modal" style="display: none;">';
     echo '<div class="igny8-modal-overlay"></div>';
@@ -312,10 +316,11 @@ function igny8_render_modal($modal_id, $title, $content) {
     echo '</div>';
     echo '</div>';
 }
-
+*/
 /**
  * Render side drawer
  */
+/*
 function igny8_render_side_drawer($drawer_id, $title, $content) {
     echo '<div id="' . esc_attr($drawer_id) . '" class="igny8-side-drawer" style="display: none;">';
     echo '<div class="igny8-drawer-overlay"></div>';
@@ -334,3 +339,4 @@ function igny8_render_side_drawer($drawer_id, $title, $content) {
     echo '</div>';
     echo '</div>';
 }
+*/
