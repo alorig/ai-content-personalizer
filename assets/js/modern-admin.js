@@ -415,22 +415,31 @@ function initToggleSwitches() {
         });
     }
     
-    // Handle personalize status toggle
+    // Handle all toggle switches generically
+    const allToggleSwitches = document.querySelectorAll('.igny8-toggle-switch');
+    allToggleSwitches.forEach(toggleContainer => {
+        const toggleInput = toggleContainer.querySelector('input[type="checkbox"]');
+        
+        if (toggleInput) {
+            // Handle clicks on the toggle switch container
+            toggleContainer.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleInput.checked = !toggleInput.checked;
+                toggleInput.dispatchEvent(new Event('change'));
+            });
+            
+            // Handle direct clicks on the input (in case it's not hidden)
+            toggleInput.addEventListener('change', function() {
+                console.log('Toggle changed:', this.name, this.checked);
+            });
+        }
+    });
+    
+    // Handle personalize status toggle specifically
     const personalizeToggle = document.querySelector('input[name="igny8_personalize_status"]');
     if (personalizeToggle) {
         personalizeToggle.addEventListener('change', function() {
-            // Update card appearance
-            const card = this.closest('.igny8-card');
-            if (card) {
-                card.className = card.className.replace(/igny8-card-(enabled|disabled)/, '');
-                card.classList.add(this.checked ? 'igny8-card-enabled' : 'igny8-card-disabled');
-                
-                // Update icon and status
-                const icon = card.querySelector('.igny8-card-icon');
-                const status = card.querySelector('.igny8-card-status');
-                if (icon) icon.textContent = this.checked ? '✓' : '○';
-                if (status) status.textContent = this.checked ? 'Enabled' : 'Disabled';
-            }
+            console.log('Personalize toggle changed:', this.checked);
         });
     }
     
