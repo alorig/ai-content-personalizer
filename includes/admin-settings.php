@@ -7,6 +7,9 @@ defined('ABSPATH') || exit;
   Group: igny8_settings_group
 ==================================================*/
 
+// Include the settings page
+require_once plugin_dir_path(__FILE__) . 'settings-page.php';
+
 /**
  * Register all plugin settings on admin_init hook
  * This function handles the registration of all WordPress options
