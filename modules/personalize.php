@@ -175,185 +175,248 @@ function igny8_content_engine_admin_page() {
     }
     
     ?>
-    <div class="wrap igny8-admin-page">
+    <div class="wrap igny8-modern-admin">
         <h1><?php esc_html_e('Rewrite & Personalization', 'igny8'); ?></h1>
         
-        <form method="post" action="">
+        <ul class="igny8-tab-nav">
+            <li><a href="#global-settings" class="active"><?php esc_html_e('Global Settings', 'igny8'); ?></a></li>
+            <li><a href="#display-settings"><?php esc_html_e('Display Settings', 'igny8'); ?></a></li>
+            <li><a href="#content-generation"><?php esc_html_e('Content Generation', 'igny8'); ?></a></li>
+            <li><a href="#advanced-settings"><?php esc_html_e('Advanced Settings', 'igny8'); ?></a></li>
+        </ul>
+        
+        <form method="post" action="" class="igny8-settings-form">
             <?php wp_nonce_field('igny8_content_engine_settings', 'igny8_content_engine_nonce'); ?>
             
-            <div class="igny8-admin-grid">
-                <!-- Global Settings Card -->
-                <div class="igny8-card">
-                    <div class="igny8-card-header">
-                        <h2><?php esc_html_e('Global Settings', 'igny8'); ?></h2>
+            <!-- Global Settings Tab -->
+            <div id="global-settings" class="igny8-tab-content active">
+                <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="igny8-card igny8-card-blue" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-blue"></div>
+                            <h3><?php esc_html_e('Module Status', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Status', 'igny8'); ?></label>
+                                <select name="igny8_status">
+                                    <option value="enabled" <?php selected(igny8_option('personalize', 'status'), 'enabled'); ?>><?php esc_html_e('Enabled', 'igny8'); ?></option>
+                                    <option value="disabled" <?php selected(igny8_option('personalize', 'status'), 'disabled'); ?>><?php esc_html_e('Disabled', 'igny8'); ?></option>
+                                </select>
+                                <p class="igny8-input-description"><?php esc_html_e('Enable or disable the personalization module globally.', 'igny8'); ?></p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="igny8-card-body">
-                        <table class="form-table">
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Status', 'igny8'); ?></th>
-                                <td>
-                                    <select name="igny8_status">
-                                        <option value="enabled" <?php selected(igny8_option('personalize', 'status'), 'enabled'); ?>><?php esc_html_e('Enabled', 'igny8'); ?></option>
-                                        <option value="disabled" <?php selected(igny8_option('personalize', 'status'), 'disabled'); ?>><?php esc_html_e('Disabled', 'igny8'); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Enabled Post Types', 'igny8'); ?></th>
-                                <td>
-                                    <?php
-                                    $post_types = get_post_types(['public' => true], 'objects');
-                                    $enabled_types = igny8_option('personalize', 'enabled_post_types');
-                                    foreach ($post_types as $post_type) {
-                                        $checked = in_array($post_type->name, $enabled_types) ? 'checked' : '';
-                                        echo '<label><input type="checkbox" name="igny8_enabled_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '> ' . esc_html($post_type->label) . '</label><br>';
-                                    }
-                                    ?>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Display Settings Card -->
-                <div class="igny8-card">
-                    <div class="igny8-card-header">
-                        <h2><?php esc_html_e('Display Settings', 'igny8'); ?></h2>
-                    </div>
-                    <div class="igny8-card-body">
-                        <table class="form-table">
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Insertion Position', 'igny8'); ?></th>
-                                <td>
-                                    <select name="igny8_insertion_position">
-                                        <option value="before" <?php selected(igny8_option('personalize', 'insertion_position'), 'before'); ?>><?php esc_html_e('Before Content', 'igny8'); ?></option>
-                                        <option value="after" <?php selected(igny8_option('personalize', 'insertion_position'), 'after'); ?>><?php esc_html_e('After Content', 'igny8'); ?></option>
-                                        <option value="replace" <?php selected(igny8_option('personalize', 'insertion_position'), 'replace'); ?>><?php esc_html_e('Replace Content', 'igny8'); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Display Mode', 'igny8'); ?></th>
-                                <td>
-                                    <select name="igny8_display_mode">
-                                        <option value="always" <?php selected(igny8_option('personalize', 'display_mode'), 'always'); ?>><?php esc_html_e('Always', 'igny8'); ?></option>
-                                        <option value="logged_in" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_in'); ?>><?php esc_html_e('Logged In Users Only', 'igny8'); ?></option>
-                                        <option value="logged_out" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_out'); ?>><?php esc_html_e('Logged Out Users Only', 'igny8'); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Teaser Text', 'igny8'); ?></th>
-                                <td>
-                                    <textarea name="igny8_teaser_text" rows="3" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'teaser_text')); ?></textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Content Generation Settings Card -->
-                <div class="igny8-card">
-                    <div class="igny8-card-header">
-                        <h2><?php esc_html_e('Content Generation', 'igny8'); ?></h2>
-                    </div>
-                    <div class="igny8-card-body">
-                        <table class="form-table">
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Content Length', 'igny8'); ?></th>
-                                <td>
-                                    <select name="igny8_content_length">
-                                        <option value="short" <?php selected(igny8_option('personalize', 'content_length'), 'short'); ?>><?php esc_html_e('Short (150 words)', 'igny8'); ?></option>
-                                        <option value="medium" <?php selected(igny8_option('personalize', 'content_length'), 'medium'); ?>><?php esc_html_e('Medium (300 words)', 'igny8'); ?></option>
-                                        <option value="long" <?php selected(igny8_option('personalize', 'content_length'), 'long'); ?>><?php esc_html_e('Long (500 words)', 'igny8'); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Tone', 'igny8'); ?></th>
-                                <td>
-                                    <input type="text" name="igny8_tone" value="<?php echo esc_attr(igny8_option('personalize', 'tone')); ?>" class="regular-text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Style', 'igny8'); ?></th>
-                                <td>
-                                    <input type="text" name="igny8_style" value="<?php echo esc_attr(igny8_option('personalize', 'style')); ?>" class="regular-text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Custom Prompt', 'igny8'); ?></th>
-                                <td>
-                                    <textarea name="igny8_prompt" rows="5" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'prompt')); ?></textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Advanced Settings Card -->
-                <div class="igny8-card">
-                    <div class="igny8-card-header">
-                        <h2><?php esc_html_e('Advanced Settings', 'igny8'); ?></h2>
-                    </div>
-                    <div class="igny8-card-body">
-                        <table class="form-table">
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Field Detection Mode', 'igny8'); ?></th>
-                                <td>
-                                    <select name="igny8_field_mode">
-                                        <option value="auto" <?php selected(igny8_option('personalize', 'field_mode'), 'auto'); ?>><?php esc_html_e('Auto Detect', 'igny8'); ?></option>
-                                        <option value="manual" <?php selected(igny8_option('personalize', 'field_mode'), 'manual'); ?>><?php esc_html_e('Manual Configuration', 'igny8'); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Detection Prompt', 'igny8'); ?></th>
-                                <td>
-                                    <textarea name="igny8_detection_prompt" rows="8" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'detection_prompt')); ?></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Custom Context', 'igny8'); ?></th>
-                                <td>
-                                    <textarea name="igny8_custom_context" rows="4" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'custom_context')); ?></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Include Page Context', 'igny8'); ?></th>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" name="igny8_include_page_context" value="1" <?php checked(igny8_option('personalize', 'include_page_context'), 1); ?> />
-                                        <?php esc_html_e('Include page content as context for personalization', 'igny8'); ?>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Save Generated Content', 'igny8'); ?></th>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" name="igny8_save_generated_content" value="1" <?php checked(igny8_option('personalize', 'save_generated_content'), 1); ?> />
-                                        <?php esc_html_e('Save generated content for future use', 'igny8'); ?>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><?php esc_html_e('Save Variations', 'igny8'); ?></th>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" name="igny8_save_variations" value="1" <?php checked(igny8_option('personalize', 'save_variations'), 1); ?> />
-                                        <?php esc_html_e('Save multiple variations of generated content', 'igny8'); ?>
-                                    </label>
-                                </td>
-                            </tr>
-                        </table>
+                    
+                    <div class="igny8-card igny8-card-green" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-green"></div>
+                            <h3><?php esc_html_e('Post Types', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Enabled Post Types', 'igny8'); ?></label>
+                                <?php
+                                $post_types = get_post_types(['public' => true], 'objects');
+                                $enabled_types = igny8_option('personalize', 'enabled_post_types');
+                                foreach ($post_types as $post_type) {
+                                    $checked = in_array($post_type->name, $enabled_types) ? 'checked' : '';
+                                    echo '<label style="display: block; margin: 5px 0;"><input type="checkbox" name="igny8_enabled_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '> ' . esc_html($post_type->label) . '</label>';
+                                }
+                                ?>
+                                <p class="igny8-input-description"><?php esc_html_e('Select which post types should have personalization enabled.', 'igny8'); ?></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <p class="submit">
-                <input type="submit" name="submit" class="button-primary" value="<?php esc_attr_e('Save Settings', 'igny8'); ?>" />
-            </p>
+            <!-- Display Settings Tab -->
+            <div id="display-settings" class="igny8-tab-content">
+                <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="igny8-card igny8-card-purple" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-purple"></div>
+                            <h3><?php esc_html_e('Content Position', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Insertion Position', 'igny8'); ?></label>
+                                <select name="igny8_insertion_position">
+                                    <option value="before" <?php selected(igny8_option('personalize', 'insertion_position'), 'before'); ?>><?php esc_html_e('Before Content', 'igny8'); ?></option>
+                                    <option value="after" <?php selected(igny8_option('personalize', 'insertion_position'), 'after'); ?>><?php esc_html_e('After Content', 'igny8'); ?></option>
+                                    <option value="replace" <?php selected(igny8_option('personalize', 'insertion_position'), 'replace'); ?>><?php esc_html_e('Replace Content', 'igny8'); ?></option>
+                                </select>
+                                <p class="igny8-input-description"><?php esc_html_e('Where to place the personalization content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-orange" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-orange"></div>
+                            <h3><?php esc_html_e('Display Mode', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Display Mode', 'igny8'); ?></label>
+                                <select name="igny8_display_mode">
+                                    <option value="always" <?php selected(igny8_option('personalize', 'display_mode'), 'always'); ?>><?php esc_html_e('Always', 'igny8'); ?></option>
+                                    <option value="logged_in" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_in'); ?>><?php esc_html_e('Logged In Users Only', 'igny8'); ?></option>
+                                    <option value="logged_out" <?php selected(igny8_option('personalize', 'display_mode'), 'logged_out'); ?>><?php esc_html_e('Logged Out Users Only', 'igny8'); ?></option>
+                                </select>
+                                <p class="igny8-input-description"><?php esc_html_e('When to show personalization content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-teal" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-green"></div>
+                            <h3><?php esc_html_e('Teaser Text', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Teaser Text', 'igny8'); ?></label>
+                                <textarea name="igny8_teaser_text" rows="3" cols="50" placeholder="<?php esc_attr_e('Want to read this as if it was written exclusively about you?', 'igny8'); ?>"><?php echo esc_textarea(igny8_option('personalize', 'teaser_text')); ?></textarea>
+                                <p class="igny8-input-description"><?php esc_html_e('Text shown to encourage users to personalize content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content Generation Tab -->
+            <div id="content-generation" class="igny8-tab-content">
+                <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="igny8-card igny8-card-blue" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-blue"></div>
+                            <h3><?php esc_html_e('Content Length', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Content Length', 'igny8'); ?></label>
+                                <select name="igny8_content_length">
+                                    <option value="short" <?php selected(igny8_option('personalize', 'content_length'), 'short'); ?>><?php esc_html_e('Short (150 words)', 'igny8'); ?></option>
+                                    <option value="medium" <?php selected(igny8_option('personalize', 'content_length'), 'medium'); ?>><?php esc_html_e('Medium (300 words)', 'igny8'); ?></option>
+                                    <option value="long" <?php selected(igny8_option('personalize', 'content_length'), 'long'); ?>><?php esc_html_e('Long (500 words)', 'igny8'); ?></option>
+                                </select>
+                                <p class="igny8-input-description"><?php esc_html_e('Length of generated personalized content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-green" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-green"></div>
+                            <h3><?php esc_html_e('Content Style', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Tone', 'igny8'); ?></label>
+                                <input type="text" name="igny8_tone" value="<?php echo esc_attr(igny8_option('personalize', 'tone')); ?>" placeholder="<?php esc_attr_e('neutral, friendly, professional', 'igny8'); ?>" />
+                                <p class="igny8-input-description"><?php esc_html_e('Tone for generated content (e.g., neutral, friendly, professional).', 'igny8'); ?></p>
+                            </div>
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Style', 'igny8'); ?></label>
+                                <input type="text" name="igny8_style" value="<?php echo esc_attr(igny8_option('personalize', 'style')); ?>" placeholder="<?php esc_attr_e('conversational, formal, casual', 'igny8'); ?>" />
+                                <p class="igny8-input-description"><?php esc_html_e('Writing style for generated content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-purple" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-purple"></div>
+                            <h3><?php esc_html_e('Custom Prompt', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Custom Prompt', 'igny8'); ?></label>
+                                <textarea name="igny8_prompt" rows="5" cols="50" placeholder="<?php esc_attr_e('Enter custom prompt for content generation...', 'igny8'); ?>"><?php echo esc_textarea(igny8_option('personalize', 'prompt')); ?></textarea>
+                                <p class="igny8-input-description"><?php esc_html_e('Custom prompt to override default content generation.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Settings Tab -->
+            <div id="advanced-settings" class="igny8-tab-content">
+                <div class="igny8-card-grid" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="igny8-card igny8-card-orange" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-orange"></div>
+                            <h3><?php esc_html_e('Field Detection', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Field Detection Mode', 'igny8'); ?></label>
+                                <select name="igny8_field_mode">
+                                    <option value="auto" <?php selected(igny8_option('personalize', 'field_mode'), 'auto'); ?>><?php esc_html_e('Auto Detect', 'igny8'); ?></option>
+                                    <option value="manual" <?php selected(igny8_option('personalize', 'field_mode'), 'manual'); ?>><?php esc_html_e('Manual Configuration', 'igny8'); ?></option>
+                                </select>
+                                <p class="igny8-input-description"><?php esc_html_e('How to detect personalization fields.', 'igny8'); ?></p>
+                            </div>
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Detection Prompt', 'igny8'); ?></label>
+                                <textarea name="igny8_detection_prompt" rows="8" cols="50"><?php echo esc_textarea(igny8_option('personalize', 'detection_prompt')); ?></textarea>
+                                <p class="igny8-input-description"><?php esc_html_e('Prompt used to detect personalization fields from content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-teal" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-blue"></div>
+                            <h3><?php esc_html_e('Context Settings', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label><?php esc_html_e('Custom Context', 'igny8'); ?></label>
+                                <textarea name="igny8_custom_context" rows="4" cols="50" placeholder="<?php esc_attr_e('Additional context for personalization...', 'igny8'); ?>"><?php echo esc_textarea(igny8_option('personalize', 'custom_context')); ?></textarea>
+                                <p class="igny8-input-description"><?php esc_html_e('Additional context to include in personalization.', 'igny8'); ?></p>
+                            </div>
+                            <div class="igny8-input-group">
+                                <label>
+                                    <input type="checkbox" name="igny8_include_page_context" value="1" <?php checked(igny8_option('personalize', 'include_page_context'), 1); ?> />
+                                    <?php esc_html_e('Include Page Context', 'igny8'); ?>
+                                </label>
+                                <p class="igny8-input-description"><?php esc_html_e('Include page content as context for personalization.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="igny8-card igny8-card-red" style="flex: 1; min-width: 300px;">
+                        <div class="igny8-card-header">
+                            <div class="igny8-card-icon igny8-icon-purple"></div>
+                            <h3><?php esc_html_e('Content Storage', 'igny8'); ?></h3>
+                        </div>
+                        <div class="igny8-card-content">
+                            <div class="igny8-input-group">
+                                <label>
+                                    <input type="checkbox" name="igny8_save_generated_content" value="1" <?php checked(igny8_option('personalize', 'save_generated_content'), 1); ?> />
+                                    <?php esc_html_e('Save Generated Content', 'igny8'); ?>
+                                </label>
+                                <p class="igny8-input-description"><?php esc_html_e('Save generated content for future use.', 'igny8'); ?></p>
+                            </div>
+                            <div class="igny8-input-group">
+                                <label>
+                                    <input type="checkbox" name="igny8_save_variations" value="1" <?php checked(igny8_option('personalize', 'save_variations'), 1); ?> />
+                                    <?php esc_html_e('Save Variations', 'igny8'); ?>
+                                </label>
+                                <p class="igny8-input-description"><?php esc_html_e('Save multiple variations of generated content.', 'igny8'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="igny8-data-table-header">
+                <button type="submit" class="button igny8-add-new"><?php esc_html_e('Save Settings', 'igny8'); ?></button>
+                <button type="button" class="button igny8-clear-filters"><?php esc_html_e('Reset to Defaults', 'igny8'); ?></button>
+            </div>
         </form>
     </div>
     <?php
