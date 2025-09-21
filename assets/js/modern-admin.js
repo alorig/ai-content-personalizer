@@ -393,7 +393,7 @@ jQuery(document).ready(function($) {
 // Toggle Switch Functionality
 function initToggleSwitches() {
     // Handle global status toggle (both old and new field names)
-    const globalToggle = document.querySelector('input[name="igny8_content_engine_global_status_toggle"], input[name="igny8_personalize_status"]');
+    const globalToggle = document.querySelector('input[name="igny8_content_engine_global_status_toggle"]');
     const globalHidden = document.querySelector('input[name="igny8_content_engine_global_status"]');
     
     if (globalToggle && globalHidden) {
@@ -402,6 +402,25 @@ function initToggleSwitches() {
             
             // Update card appearance
             const card = this.closest('.igny8-global-card');
+            if (card) {
+                card.className = card.className.replace(/igny8-card-(enabled|disabled)/, '');
+                card.classList.add(this.checked ? 'igny8-card-enabled' : 'igny8-card-disabled');
+                
+                // Update icon and status
+                const icon = card.querySelector('.igny8-card-icon');
+                const status = card.querySelector('.igny8-card-status');
+                if (icon) icon.textContent = this.checked ? '✓' : '○';
+                if (status) status.textContent = this.checked ? 'Enabled' : 'Disabled';
+            }
+        });
+    }
+    
+    // Handle personalize status toggle
+    const personalizeToggle = document.querySelector('input[name="igny8_personalize_status"]');
+    if (personalizeToggle) {
+        personalizeToggle.addEventListener('change', function() {
+            // Update card appearance
+            const card = this.closest('.igny8-card');
             if (card) {
                 card.className = card.className.replace(/igny8-card-(enabled|disabled)/, '');
                 card.classList.add(this.checked ? 'igny8-card-enabled' : 'igny8-card-disabled');

@@ -140,7 +140,7 @@ function igny8_content_engine_admin_page() {
                             <div class="igny8-input-group">
                                 <label><?php esc_html_e('Status', 'igny8'); ?></label>
                                 <div class="igny8-toggle-switch">
-                                    <input type="checkbox" name="igny8_personalize_status" value="enabled" <?php checked(get_option('igny8_personalize_status', 'enabled'), 'enabled'); ?>>
+                                    <input type="checkbox" name="igny8_personalize_status" <?php checked(get_option('igny8_personalize_status', 'enabled'), 'enabled'); ?>>
                                     <span class="igny8-toggle-slider"></span>
                                 </div>
                                 <p class="igny8-input-description"><?php esc_html_e('Enable or disable the personalization module globally.', 'igny8'); ?></p>
@@ -157,14 +157,17 @@ function igny8_content_engine_admin_page() {
                             <div class="igny8-input-group">
                                 <label><?php esc_html_e('Enabled Post Types', 'igny8'); ?></label>
                                 <?php
-                                $post_types = get_post_types(['public' => true], 'objects');
+                                $allowed_post_types = ['post', 'page'];
                                 $enabled_types = get_option('igny8_personalize_enabled_post_types', []);
-                                foreach ($post_types as $post_type) {
-                                    $checked = in_array($post_type->name, $enabled_types) ? 'checked' : '';
-                                    echo '<label class="igny8-checkbox-label" style="display: block; margin: 8px 0;">
-                                        <input type="checkbox" name="igny8_personalize_enabled_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '>
-                                        <span class="igny8-checkbox-text">' . esc_html($post_type->label) . '</span>
-                                    </label>';
+                                foreach ($allowed_post_types as $post_type_name) {
+                                    $post_type = get_post_type_object($post_type_name);
+                                    if ($post_type) {
+                                        $checked = in_array($post_type_name, $enabled_types) ? 'checked' : '';
+                                        echo '<label class="igny8-checkbox-label" style="display: block; margin: 8px 0;">
+                                            <input type="checkbox" name="igny8_personalize_enabled_post_types[]" value="' . esc_attr($post_type_name) . '" ' . $checked . '>
+                                            <span class="igny8-checkbox-text">' . esc_html($post_type->label) . '</span>
+                                        </label>';
+                                    }
                                 }
                                 ?>
                                 <p class="igny8-input-description"><?php esc_html_e('Select which post types should have personalization enabled.', 'igny8'); ?></p>

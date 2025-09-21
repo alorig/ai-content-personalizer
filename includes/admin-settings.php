@@ -63,7 +63,10 @@ add_action('admin_init', function () {
 
     // == Personalize Module Settings
     register_setting('igny8_settings_group', 'igny8_personalize_status', [
-        'sanitize_callback' => 'sanitize_text_field',
+        'sanitize_callback' => function($raw) {
+            // Handle checkbox: if not set, it means disabled
+            return isset($_POST['igny8_personalize_status']) ? 'enabled' : 'disabled';
+        }
     ]);
     register_setting('igny8_settings_group', 'igny8_personalize_enabled_post_types', [
         'sanitize_callback' => function($raw) {
