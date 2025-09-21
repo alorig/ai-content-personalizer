@@ -206,6 +206,12 @@ jQuery(document).ready(function($) {
         // Save drawer
         $('.igny8-drawer-save').on('click', function() {
             const drawer = $(this).closest('.igny8-side-drawer');
+            
+            // Guard check: return early if drawer doesn't exist
+            if (drawer.length === 0) {
+                return;
+            }
+            
             const formData = getDrawerFormData(drawer);
             
             // Save data (placeholder for now)
@@ -602,6 +608,11 @@ function openAddDrawer(type) {
     const title = document.getElementById('igny8-drawer-title');
     const content = document.getElementById('igny8-form-content');
     
+    // Guard check: return early if drawer elements don't exist
+    if (!drawer || !title || !content) {
+        return;
+    }
+    
     // Set title based on type
     const titles = {
         'keyword': 'Add New Keyword',
@@ -626,6 +637,11 @@ function openEditDrawer(type, id) {
     const title = document.getElementById('igny8-edit-drawer-title');
     const content = document.getElementById('igny8-edit-form-content');
     
+    // Guard check: return early if drawer elements don't exist
+    if (!drawer || !title || !content) {
+        return;
+    }
+    
     // Set title based on type
     const titles = {
         'keyword': 'Edit Keyword',
@@ -647,6 +663,12 @@ function openEditDrawer(type, id) {
 
 function closeDrawers() {
     const drawers = document.querySelectorAll('.igny8-drawer');
+    
+    // Guard check: return early if no drawers exist
+    if (drawers.length === 0) {
+        return;
+    }
+    
     drawers.forEach(drawer => {
         drawer.classList.remove('active');
     });
