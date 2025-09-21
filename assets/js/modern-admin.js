@@ -392,8 +392,8 @@ jQuery(document).ready(function($) {
 
 // Toggle Switch Functionality
 function initToggleSwitches() {
-    // Handle global status toggle
-    const globalToggle = document.querySelector('input[name="igny8_content_engine_global_status_toggle"]');
+    // Handle global status toggle (both old and new field names)
+    const globalToggle = document.querySelector('input[name="igny8_content_engine_global_status_toggle"], input[name="igny8_personalize_status"]');
     const globalHidden = document.querySelector('input[name="igny8_content_engine_global_status"]');
     
     if (globalToggle && globalHidden) {
@@ -415,8 +415,8 @@ function initToggleSwitches() {
         });
     }
     
-    // Handle post type toggles
-    const postTypeToggles = document.querySelectorAll('input[name="igny8_content_engine_enabled_post_types[]"]');
+    // Handle post type toggles (both old and new field names)
+    const postTypeToggles = document.querySelectorAll('input[name="igny8_content_engine_enabled_post_types[]"], input[name="igny8_personalize_enabled_post_types[]"]');
     postTypeToggles.forEach(toggle => {
         toggle.addEventListener('change', function() {
             const card = this.closest('.igny8-global-card, .igny8-post-type-card');
@@ -433,8 +433,8 @@ function initToggleSwitches() {
         });
     });
     
-    // Handle other toggle switches (save variations, include page context, etc.)
-    const otherToggles = document.querySelectorAll('input[name="igny8_content_engine_save_variations"], input[name="igny8_content_engine_include_page_context"]');
+    // Handle other toggle switches (both old and new field names)
+    const otherToggles = document.querySelectorAll('input[name="igny8_content_engine_save_variations"], input[name="igny8_content_engine_include_page_context"], input[name="igny8_personalize_save_variations"], input[name="igny8_personalize_include_page_context"]');
     otherToggles.forEach(toggle => {
         toggle.addEventListener('change', function() {
             const card = this.closest('.igny8-global-card');
@@ -470,13 +470,14 @@ function initToggleSwitches() {
         });
     });
     
-    // Handle Field Mode toggle
-    const fieldModeToggle = document.querySelector('input[name="igny8_content_engine_field_mode"]');
+    // Handle Field Mode toggle (both old and new field names)
+    const fieldModeToggle = document.querySelector('input[name="igny8_content_engine_field_mode"], select[name="igny8_personalize_field_mode"]');
     if (fieldModeToggle) {
         fieldModeToggle.addEventListener('change', function() {
             const label = document.querySelector('.igny8-toggle-label');
             if (label) {
-                label.textContent = this.checked ? 'Auto Detect (GPT)' : 'Fixed Fields';
+                const isAuto = this.type === 'checkbox' ? this.checked : this.value === 'auto';
+                label.textContent = isAuto ? 'Auto Detect (GPT)' : 'Fixed Fields';
             }
         });
     }

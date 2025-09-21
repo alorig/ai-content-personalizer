@@ -913,11 +913,6 @@ span.igny8-table-page-btn.active {
         width: 95vw;
     }
     
-    .igny8-drawer {
-        width: 100%;
-        right: -100%;
-    }
-    
     .igny8-tab-nav {
         flex-wrap: wrap;
         gap: 4px;
