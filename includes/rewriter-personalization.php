@@ -682,22 +682,6 @@ Content: [CONTENT]')); ?></textarea>
                                             </select>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><?php esc_html_e('Content Rewriter Prompt','igny8'); ?></td>
-                                        <td>
-                                            <div class="igny8-table-search">
-                                                <textarea name="igny8_content_engine_prompt" rows="8" cols="60" placeholder="<?php esc_attr_e('Enter content generation prompt...','igny8'); ?>"><?php echo esc_textarea(get_option('igny8_content_engine_prompt', '')); ?></textarea>
-                                            </div>
-                                        </td>
-                                        <td><?php esc_html_e('Define the AI prompt template used when rewriting or personalizing content. Variables from persona/context will be appended automatically.','igny8'); ?></td>
-                                        <td>
-                                            <select class="igny8-table-select">
-                                                <option>Actions</option>
-                                                <option>Test</option>
-                                                <option>Reset</option>
-                                            </select>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -729,108 +713,31 @@ Content: [CONTENT]')); ?></textarea>
                         </div>
                     </div>
                     
-                    <div class="igny8-data-table-container">
-                        <div class="igny8-table-header">
-                            <h3 class="igny8-table-title"><?php esc_html_e('Content Regeneration Queue','igny8'); ?></h3>
-                            <div class="igny8-table-controls">
-                                <div class="igny8-table-show">
-                                    <label><?php esc_html_e('Show:','igny8'); ?></label>
-                                    <select>
-                                        <option>10</option>
-                                        <option>25</option>
-                                        <option>50</option>
-                                        <option>100</option>
-                                    </select>
-                                </div>
-                                <div class="igny8-table-search">
-                                    <input type="text" placeholder="<?php esc_attr_e('Search posts...','igny8'); ?>">
+                    <!-- Content Generation Prompt Card -->
+                    <div class="igny8-card-grid">
+                        <div class="igny8-card igny8-card-full">
+                            <div class="igny8-card-header">
+                                <h3><?php esc_html_e('Content Rewriter Prompt','igny8'); ?></h3>
+                                <p><?php esc_html_e('Define the AI prompt template used when rewriting or personalizing content. Variables from persona/context will be appended automatically.','igny8'); ?></p>
+                            </div>
+                            <div class="igny8-card-content">
+                                <div class="igny8-filter-group">
+                                    <label><?php esc_html_e('Content Generation Prompt','igny8'); ?></label>
+                                    <textarea name="igny8_content_engine_prompt" rows="12" placeholder="<?php esc_attr_e('Enter content generation prompt...','igny8'); ?>"><?php echo esc_textarea(get_option('igny8_content_engine_prompt', '')); ?></textarea>
+                                    <p class="description"><?php esc_html_e('This prompt will be used by the AI to generate personalized content. Use placeholders like [CONTENT] for original content and [INPUTS] for user data.','igny8'); ?></p>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="igny8-table-wrapper">
-                            <table class="igny8-data-table">
-                                <thead>
-                                    <tr>
-                                        <th class="igny8-checkbox-col">
-                                            <input type="checkbox" class="igny8-table-checkbox">
-                                        </th>
-                                        <th class="igny8-sortable"><?php esc_html_e('POST TITLE','igny8'); ?></th>
-                                        <th class="igny8-sortable"><?php esc_html_e('TYPE','igny8'); ?></th>
-                                        <th class="igny8-sortable"><?php esc_html_e('STATUS','igny8'); ?></th>
-                                        <th class="igny8-sortable"><?php esc_html_e('LAST REGENERATED','igny8'); ?></th>
-                                        <th class="igny8-sortable"><?php esc_html_e('VARIATIONS','igny8'); ?></th>
-                                        <th class="igny8-actions-col"><?php esc_html_e('ACTIONS','igny8'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="igny8-checkbox-col">
-                                            <input type="checkbox" class="igny8-table-checkbox">
-                                        </td>
-                                        <td>AI Guide</td>
-                                        <td>Post</td>
-                                        <td><span class="igny8-badge yellow">Pending</span></td>
-                                        <td>2024-01-15</td>
-                                        <td>3</td>
-                                        <td>
-                                            <select class="igny8-table-select">
-                                                <option>Actions</option>
-                                                <option>Regenerate</option>
-                                                <option>Edit</option>
-                                                <option>Delete</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="igny8-checkbox-col">
-                                            <input type="checkbox" class="igny8-table-checkbox">
-                                        </td>
-                                        <td>Machine Learning</td>
-                                        <td>Page</td>
-                                        <td><span class="igny8-badge green">Regenerated</span></td>
-                                        <td>2024-01-14</td>
-                                        <td>5</td>
-                                        <td>
-                                            <select class="igny8-table-select">
-                                                <option>Actions</option>
-                                                <option>Regenerate</option>
-                                                <option>Edit</option>
-                                                <option>Delete</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="igny8-checkbox-col">
-                                            <input type="checkbox" class="igny8-table-checkbox">
-                                        </td>
-                                        <td>Deep Learning</td>
-                                        <td>Post</td>
-                                        <td><span class="igny8-badge blue">Variation Generated</span></td>
-                                        <td>2024-01-13</td>
-                                        <td>2</td>
-                                        <td>
-                                            <select class="igny8-table-select">
-                                                <option>Actions</option>
-                                                <option>Regenerate</option>
-                                                <option>Edit</option>
-                                                <option>Delete</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="igny8-table-footer">
-                            <div class="igny8-table-info">
-                                <?php esc_html_e('Showing 1 to 3 of 3 entries','igny8'); ?>
-                            </div>
-                            <div class="igny8-table-pagination-controls">
-                                <span class="igny8-table-page-btn"><?php esc_html_e('Previous','igny8'); ?></span>
-                                <span class="igny8-table-page-btn active">1</span>
-                                <span class="igny8-table-page-btn"><?php esc_html_e('Next','igny8'); ?></span>
-                            </div>
+                    </div>
+                    
+                    <!-- Save Button -->
+                    <div class="igny8-save-section">
+                        <div class="igny8-save-container">
+                            <button type="submit" class="igny8-btn igny8-btn-success igny8-btn-large">
+                                <span class="igny8-btn-icon">✓</span>
+                                <?php esc_html_e('Save Settings','igny8'); ?>
+                            </button>
+                            <p class="igny8-save-description"><?php esc_html_e('All settings will be saved and applied immediately.','igny8'); ?></p>
                         </div>
                     </div>
                 </div>
