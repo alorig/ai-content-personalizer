@@ -10,21 +10,6 @@ defined('ABSPATH') || exit;
  * Dashboard page
  */
 function igny8_dashboard_page() {
-    // Get real data from CPTs
-    $total_keywords = wp_count_posts('igny8_keywords')->publish ?? 0;
-    $total_clusters = wp_count_posts('igny8_clusters')->publish ?? 0;
-    $total_tasks = wp_count_posts('igny8_content_planner')->publish ?? 0;
-    $total_profiles = wp_count_posts('igny8_context_profiles')->publish ?? 0;
-    
-    // Get mapped keywords percentage
-    $mapped_keywords = igny8_get_mapped_keywords_percentage();
-    
-    // Get high volume keywords
-    $high_volume = igny8_get_cpt_count_by_meta('igny8_keywords', '_igny8_search_volume', 1000, '>');
-    
-    // Get unmapped keywords
-    $unmapped_keywords = $total_keywords - igny8_get_cpt_count_by_meta('igny8_keywords', '_igny8_cluster_relation', '', 'EXISTS');
-    
     // Get recent activity from all CPTs
     $recent_activities = [];
     
@@ -98,48 +83,7 @@ function igny8_dashboard_page() {
     $recent_activities = array_slice($recent_activities, 0, 5);
     ?>
     <div class="wrap igny8-modern-admin">
-        <h1><?php esc_html_e('Igny8 Dashboard','igny8'); ?></h1>
-        
-        <!-- Metric Cards -->
-        <div class="igny8-metric-cards">
-            <div class="igny8-metric-card">
-                <div class="igny8-metric-value"><?php echo esc_html($total_keywords); ?></div>
-                <div class="igny8-metric-label">Total Keywords</div>
-                <div class="igny8-metric-change positive">+12%</div>
-            </div>
-            <div class="igny8-metric-card">
-                <div class="igny8-metric-value"><?php echo esc_html($mapped_keywords); ?>%</div>
-                <div class="igny8-metric-label">Mapped to Clusters</div>
-                <div class="igny8-metric-change positive">+5%</div>
-            </div>
-            <div class="igny8-metric-card">
-                <div class="igny8-metric-value"><?php echo esc_html($high_volume); ?></div>
-                <div class="igny8-metric-label">High Volume Keywords</div>
-                <div class="igny8-metric-change positive">+8%</div>
-            </div>
-            <div class="igny8-metric-card">
-                <div class="igny8-metric-value"><?php echo esc_html($unmapped_keywords); ?></div>
-                <div class="igny8-metric-label">Unmapped Keywords</div>
-                <div class="igny8-metric-change negative">-15%</div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="igny8-filter-bar">
-            <div class="igny8-filter-group">
-                <label>Quick Actions</label>
-                <select>
-                    <option><?php esc_html_e('Select Action','igny8'); ?></option>
-                    <option><?php esc_html_e('Add New Keyword','igny8'); ?></option>
-                    <option><?php esc_html_e('Create Cluster','igny8'); ?></option>
-                    <option><?php esc_html_e('Generate Report','igny8'); ?></option>
-                </select>
-            </div>
-            <div class="igny8-table-search">
-                <input type="search" placeholder="<?php esc_attr_e('Search dashboard...','igny8'); ?>">
-            </div>
-            <button class="button igny8-apply-filters"><?php esc_html_e('Execute','igny8'); ?></button>
-        </div>
+        <h1><?php esc_html_e('Recent Activity','igny8'); ?></h1>
 
         <!-- Recent Activity -->
         <div class="igny8-data-table-container">
@@ -224,59 +168,6 @@ function igny8_dashboard_page() {
                     <button class="igny8-table-page-btn">2</button>
                     <button class="igny8-table-page-btn">3</button>
                     <button class="igny8-table-page-btn">></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Help Section -->
-        <div class="igny8-help-section">
-            <div class="igny8-help-title"><?php esc_html_e('Dashboard Help','igny8'); ?></div>
-            <div class="igny8-help-content">
-                <p><?php esc_html_e('Welcome to the Igny8 Dashboard! This is your central command center for managing all aspects of your SEO and content strategy.','igny8'); ?></p>
-                <p><?php esc_html_e('Use the metric cards above to get a quick overview of your keyword performance, and check the recent activity table to stay updated on all system actions.','igny8'); ?></p>
-            </div>
-        </div>
-        
-        <!-- Add New Drawer -->
-        <div id="igny8-add-drawer" class="igny8-drawer">
-            <div class="igny8-drawer-overlay"></div>
-            <div class="igny8-drawer-content">
-                <div class="igny8-drawer-header">
-                    <h3 id="igny8-drawer-title"><?php esc_html_e('Add New Record', 'igny8'); ?></h3>
-                    <button class="igny8-drawer-close">&times;</button>
-                </div>
-                <div class="igny8-drawer-body">
-                    <form id="igny8-add-form">
-                        <div id="igny8-form-content">
-                            <!-- Dynamic form content will be loaded here -->
-                        </div>
-                        <div class="igny8-drawer-footer">
-                            <button type="button" class="button igny8-btn-secondary igny8-drawer-close"><?php esc_html_e('Cancel', 'igny8'); ?></button>
-                            <button type="submit" class="button igny8-btn-primary"><?php esc_html_e('Save', 'igny8'); ?></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Edit Drawer -->
-        <div id="igny8-edit-drawer" class="igny8-drawer">
-            <div class="igny8-drawer-overlay"></div>
-            <div class="igny8-drawer-content">
-                <div class="igny8-drawer-header">
-                    <h3 id="igny8-edit-drawer-title"><?php esc_html_e('Edit Record', 'igny8'); ?></h3>
-                    <button class="igny8-drawer-close">&times;</button>
-                </div>
-                <div class="igny8-drawer-body">
-                    <form id="igny8-edit-form">
-                        <div id="igny8-edit-form-content">
-                            <!-- Dynamic form content will be loaded here -->
-                        </div>
-                        <div class="igny8-drawer-footer">
-                            <button type="button" class="button igny8-btn-secondary igny8-drawer-close"><?php esc_html_e('Cancel', 'igny8'); ?></button>
-                            <button type="submit" class="button igny8-btn-primary"><?php esc_html_e('Update', 'igny8'); ?></button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
